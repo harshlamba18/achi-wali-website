@@ -1,33 +1,177 @@
+import {
+  Arima,
+  Bitcount_Prop_Single,
+  Righteous,
+  Roboto,
+  Rowdies,
+  Ubuntu,
+} from "next/font/google";
 import Image from "next/image";
-import Navbar from "./components/navbar";
-import glowingCircle from "./assets/glowing-circle.svg";
-import { Roboto } from "next/font/google";
-import Footer from "./components/footer";
 
-const roboto_font = Roboto({
+import BgHero from "./assets/bg-hero.png";
+import Navbar from "./components/navbar";
+import FeaturedProducts from "./featuredproducts";
+
+const heading_font = Righteous({
+  subsets: ["latin"],
+  weight: "400",
+});
+
+const paragraph_font = Roboto({
   subsets: ["latin"],
 });
 
 export default function Home() {
   return (
-    <div className="w-full bg-black text-white">
-      <div className="absolute flex w-full top-0 left-0 justify-center items-center z-0">
-        <Image src={glowingCircle} alt="glow" className="opacity-70" />
-      </div>
-      <Navbar />
-
-      <div className="mt-48 w-full h-screen flex flex-col gap-8 grow px-48">
-        <h1 className={`text-8xl ${roboto_font.className} tracking-wide`}>
-          Computer Graphics <br /> Society
+    <div className="bg-gradient-to-tr from-neutral-900 to-gray-950">
+      {/* <div className="w-full h-screen grid grid-cols-2 text-white">
+        <div className="w-full h-full grid grid-rows-3">
+          <div className="grid grid-cols-2">
+            <div className="grid grid-rows-2">
+              <div className="flex p-4 gap-4">
+                <div className="w-full h-full bg-pink-100/10 border-2 border-pink-400/40 hover:bg-pink-300/50 transition-all duration-100 rounded-lg"></div>
+                <div className="w-full h-full bg-pink-100/10 border-2 border-pink-400/40 hover:bg-pink-300/50 transition-all duration-100 rounded-lg"></div>
+              </div>
+              <div className="flex p-4 gap-4">
+                <div className="w-full h-full bg-pink-100/10 border-2 border-pink-400/40 hover:bg-pink-300/50 transition-all duration-100 rounded-lg"></div>
+                <div className="w-full h-full bg-pink-100/10 border-2 border-pink-400/40 hover:bg-pink-300/50 transition-all duration-100 rounded-lg"></div>
+              </div>
+            </div>
+            <div className="flex p-4 gap-4">
+              <div className="w-full h-full bg-pink-100/10 border-2 border-pink-400/40 hover:bg-pink-300/50 transition-all duration-100 rounded-lg"></div>
+              <div className="w-full h-full bg-pink-100/10 border-2 border-pink-400/40 hover:bg-pink-300/50 transition-all duration-100 rounded-lg"></div>
+            </div>
+          </div>
+          <div className="grid grid-cols-2">
+            <div className="grid grid-rows-2">
+              <div className="flex p-4 gap-4">
+                <div className="w-full h-full bg-pink-100/10 border-2 border-pink-400/40 hover:bg-pink-300/50 transition-all duration-100 rounded-lg"></div>
+                <div className="w-full h-full bg-pink-100/10 border-2 border-pink-400/40 hover:bg-pink-300/50 transition-all duration-100 rounded-lg"></div>
+              </div>
+              <div className="flex p-4 gap-4">
+                <div className="w-full h-full bg-pink-100/10 border-2 border-pink-400/40 hover:bg-pink-300/50 transition-all duration-100 rounded-lg"></div>
+                <div className="w-full h-full bg-pink-100/10 border-2 border-pink-400/40 hover:bg-pink-300/50 transition-all duration-100 rounded-lg"></div>
+              </div>
+            </div>
+            <div className="flex p-4 gap-4">
+              <div className="w-full h-full bg-pink-100/10 border-2 border-pink-400/40 hover:bg-pink-300/50 transition-all duration-100 rounded-lg"></div>
+              <div className="w-full h-full bg-pink-100/10 border-2 border-pink-400/40 hover:bg-pink-300/50 transition-all duration-100 rounded-lg"></div>
+            </div>
+          </div>
+          <div className="grid grid-cols-2">
+            <div className="grid grid-rows-2">
+              <div className="flex p-4 gap-4">
+                <div className="w-full h-full bg-pink-100/10 border-2 border-pink-400/40 hover:bg-pink-300/50 transition-all duration-100 rounded-lg"></div>
+                <div className="w-full h-full bg-pink-100/10 border-2 border-pink-400/40 hover:bg-pink-300/50 transition-all duration-100 rounded-lg"></div>
+              </div>
+              <div className="flex p-4 gap-4">
+                <div className="w-full h-full bg-pink-100/10 border-2 border-pink-400/40 hover:bg-pink-300/50 transition-all duration-100 rounded-lg"></div>
+                <div className="w-full h-full bg-pink-100/10 border-2 border-pink-400/40 hover:bg-pink-300/50 transition-all duration-100 rounded-lg"></div>
+              </div>
+            </div>
+            <div className="flex p-4 gap-4">
+              <div className="w-full h-full bg-pink-100/10 border-2 border-pink-400/40 hover:bg-pink-300/50 transition-all duration-100 rounded-lg"></div>
+              <div className="w-full h-full bg-pink-100/10 border-2 border-pink-400/40 hover:bg-pink-300/50 transition-all duration-100 rounded-lg"></div>
+            </div>
+          </div>
+        </div>
+        <div className="w-full h-full grid grid-rows-3">
+          <div className="grid grid-cols-2">
+            <div className="grid grid-rows-2">
+              <div className="flex p-4 gap-4">
+                <div className="w-full h-full bg-pink-100/10 border-2 border-pink-400/40 hover:bg-pink-300/50 transition-all duration-100 rounded-lg"></div>
+                <div className="w-full h-full bg-pink-100/10 border-2 border-pink-400/40 hover:bg-pink-300/50 transition-all duration-100 rounded-lg"></div>
+              </div>
+              <div className="flex p-4 gap-4">
+                <div className="w-full h-full bg-pink-100/10 border-2 border-pink-400/40 hover:bg-pink-300/50 transition-all duration-100 rounded-lg"></div>
+                <div className="w-full h-full bg-pink-100/10 border-2 border-pink-400/40 hover:bg-pink-300/50 transition-all duration-100 rounded-lg"></div>
+              </div>
+            </div>
+            <div className="flex p-4 gap-4">
+              <div className="w-full h-full bg-pink-100/10 border-2 border-pink-400/40 hover:bg-pink-300/50 transition-all duration-100 rounded-lg"></div>
+              <div className="w-full h-full bg-pink-100/10 border-2 border-pink-400/40 hover:bg-pink-300/50 transition-all duration-100 rounded-lg"></div>
+            </div>
+          </div>
+          <div className="grid grid-cols-2">
+            <div className="grid grid-rows-2">
+              <div className="flex p-4 gap-4">
+                <div className="w-full h-full bg-pink-100/10 border-2 border-pink-400/40 hover:bg-pink-300/50 transition-all duration-100 rounded-lg"></div>
+                <div className="w-full h-full bg-pink-100/10 border-2 border-pink-400/40 hover:bg-pink-300/50 transition-all duration-100 rounded-lg"></div>
+              </div>
+              <div className="flex p-4 gap-4">
+                <div className="w-full h-full bg-pink-100/10 border-2 border-pink-400/40 hover:bg-pink-300/50 transition-all duration-100 rounded-lg"></div>
+                <div className="w-full h-full bg-pink-100/10 border-2 border-pink-400/40 hover:bg-pink-300/50 transition-all duration-100 rounded-lg"></div>
+              </div>
+            </div>
+            <div className="flex p-4 gap-4">
+              <div className="w-full h-full bg-pink-100/10 border-2 border-pink-400/40 hover:bg-pink-300/50 transition-all duration-100 rounded-lg"></div>
+              <div className="w-full h-full bg-pink-100/10 border-2 border-pink-400/40 hover:bg-pink-300/50 transition-all duration-100 rounded-lg"></div>
+            </div>
+          </div>
+          <div className="grid grid-cols-2">
+            <div className="grid grid-rows-2">
+              <div className="flex p-4 gap-4">
+                <div className="w-full h-full bg-pink-100/10 border-2 border-pink-400/40 hover:bg-pink-300/50 transition-all duration-100 rounded-lg"></div>
+                <div className="w-full h-full bg-pink-100/10 border-2 border-pink-400/40 hover:bg-pink-300/50 transition-all duration-100 rounded-lg"></div>
+              </div>
+              <div className="flex p-4 gap-4">
+                <div className="w-full h-full bg-pink-100/10 border-2 border-pink-400/40 hover:bg-pink-300/50 transition-all duration-100 rounded-lg"></div>
+                <div className="w-full h-full bg-pink-100/10 border-2 border-pink-400/40 hover:bg-pink-300/50 transition-all duration-100 rounded-lg"></div>
+              </div>
+            </div>
+            <div className="flex p-4 gap-4">
+              <div className="w-full h-full bg-pink-100/10 border-2 border-pink-400/40 hover:bg-pink-300/50 transition-all duration-100 rounded-lg"></div>
+              <div className="w-full h-full bg-pink-100/10 border-2 border-pink-400/40 hover:bg-pink-300/50 transition-all duration-100 rounded-lg"></div>
+            </div>
+          </div>
+        </div>
+      </div> */}
+      <section
+        className="h-screen w-full flex flex-col justify-center items-center z-10"
+        style={{
+          backgroundImage: `url(${BgHero.src})`,
+          backgroundRepeat: "no-repeat",
+          backgroundSize: "cover",
+        }}
+      >
+        <Navbar />
+        <h1
+          className={`text-9xl fade-in max-w-6xl text-center ${heading_font.className} bg-gradient-to-tr from-white to-pink-600 bg-clip-text text-transparent`}
+        >
+          Computer Graphics Society
         </h1>
 
-        <p className="text-3xl max-w-2/3">
-          Exploring the future of game development and immersive tech — from
-          graphics and shadersto VR, AR, and blockchain gaming.
+        <p
+          className={`text-gray-500 fade-in-2 text-2xl max-w-4xl text-center font-bold mt-4 ${paragraph_font.className}`}
+        >
+          We, the Computer Graphics Society at IIT Kharagpur, are a passionate
+          group of students dedicated to exploring the world of game development
+          using Unity and Unreal engines.
         </p>
-      </div>
 
-      <Footer />
+        <p className="text-gray-500 relative top-32">
+          <span className="inline-flex flex-col items-center animate-bounce">
+            <svg
+              className="w-8 h-8 text-pink-400"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M19 9l-7 7-7-7"
+              />
+            </svg>
+            <span className="mt-2 text-pink-400 font-semibold">
+              Scroll Down
+            </span>
+          </span>
+        </p>
+      </section>
+
+      <FeaturedProducts />
     </div>
   );
 }
