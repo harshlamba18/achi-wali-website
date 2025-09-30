@@ -322,7 +322,14 @@ const FeaturedProjects: React.FC = () => {
           </p>
         </motion.div>
 
-        <div className="relative h-[500px] flex items-center justify-center perspective-1000">
+        <div
+          className="relative h-[500px] flex items-center justify-center"
+          style={{
+            perspective: 1200, // reliable perspective
+            WebkitPerspective: 1200,
+            transformStyle: "preserve-3d", // ensure 3D children render correctly
+          }}
+        >
           {projects.map((project, index) => (
             <ProjectCard
               key={project.id}
