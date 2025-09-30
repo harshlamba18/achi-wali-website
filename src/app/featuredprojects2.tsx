@@ -46,7 +46,7 @@ const CarouselContainer = styled.div`
 const Card = styled(animated.div)`
   position: absolute;
   width: 320px;
-  height: 450px;
+  height: 500px;
   background: rgba(0, 0, 0, 0.7);
   border-radius: 20px;
   color: white;
@@ -378,7 +378,6 @@ const FeaturedProjects2: React.FC = () => {
 
   return (
     <FooterContainer>
-      {/* Animated background blobs */}
       <BackgroundBlob
         animate={{
           x: [0, 100, -100, 0],
@@ -494,13 +493,13 @@ const FeaturedProjects2: React.FC = () => {
             </div>
 
             <div>
-              <TechStack>
+              {/* <TechStack>
                 {project.techStack.map((tech, i) => (
                   <TechTag key={i}>{tech}</TechTag>
                 ))}
-              </TechStack>
+              </TechStack> */}
 
-              {index === activeIndex && (
+              {(index === activeIndex || 1) && (
                 <ViewButton
                   href={project.link}
                   target="_blank"

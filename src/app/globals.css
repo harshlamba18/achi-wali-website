@@ -67,6 +67,35 @@ body {
   }
 }
 
+@keyframes footer-float {
+  0% {
+    transform: translate(0, 0) rotate(0deg);
+  }
+  25% {
+    transform: translate(20px, -15px) rotate(5deg);
+  }
+  50% {
+    transform: translate(0, 10px) rotate(0deg);
+  }
+  75% {
+    transform: translate(-20px, -5px) rotate(-5deg);
+  }
+  100% {
+    transform: translate(0, 0) rotate(0deg);
+  }
+}
+
+@keyframes footer-pulse {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 0.15;
+  }
+  50% {
+    transform: scale(1.1);
+    opacity: 0.25;
+  }
+}
+
 @keyframes glow {
   0%, 100% {
     box-shadow: 0 0 20px rgba(236, 72, 153, 0.3);
@@ -99,6 +128,22 @@ body {
 
 .animate-float {
   animation: float 6s ease-in-out infinite;
+}
+
+.animate-footer-float-1 {
+  animation: footer-float 15s ease-in-out infinite;
+}
+
+.animate-footer-float-2 {
+  animation: footer-float 20s ease-in-out infinite reverse;
+}
+
+.animate-footer-float-3 {
+  animation: footer-pulse 12s ease-in-out infinite;
+}
+
+.animate-footer-float-4 {
+  animation: footer-float 18s ease-in-out infinite 2s;
 }
 
 .animate-glow {

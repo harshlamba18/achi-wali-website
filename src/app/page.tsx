@@ -12,6 +12,7 @@ import BgHero from "./assets/bg-hero.png";
 import Navbar from "./components/navbar";
 import FeaturedProjects from "./featuredprojects";
 import Footer from "./footer";
+import FeaturedProjects2 from "./featuredprojects2";
 
 const heading_font = Righteous({
   subsets: ["latin"],
@@ -173,6 +174,7 @@ export default function Home() {
       </section>
 
       <FeaturedProjects />
+      {/* <FeaturedProjects2 /> */}
 
       <Footer />
     </div>
