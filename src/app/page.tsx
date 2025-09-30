@@ -1,103 +1,182 @@
+import {
+  Arima,
+  Bitcount_Prop_Single,
+  Righteous,
+  Roboto,
+  Rowdies,
+  Ubuntu,
+} from "next/font/google";
 import Image from "next/image";
+
+import BgHero from "./assets/bg-hero.png";
+import Navbar from "./components/navbar";
+import FeaturedProjects from "./featuredprojects";
+import Footer from "./footer";
+import FeaturedProjects2 from "./featuredprojects2";
+
+const heading_font = Righteous({
+  subsets: ["latin"],
+  weight: "400",
+});
+
+const paragraph_font = Roboto({
+  subsets: ["latin"],
+});
 
 export default function Home() {
   return (
-    <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="font-mono list-inside list-decimal text-sm/6 text-center sm:text-left">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] font-mono font-semibold px-1 py-0.5 rounded">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
-
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+    <div className="bg-gradient-to-tr from-neutral-900 to-gray-950">
+      {/* <div className="w-full h-screen grid grid-cols-2 text-white">
+        <div className="w-full h-full grid grid-rows-3">
+          <div className="grid grid-cols-2">
+            <div className="grid grid-rows-2">
+              <div className="flex p-4 gap-4">
+                <div className="w-full h-full bg-pink-100/10 border-2 border-pink-400/40 hover:bg-pink-300/50 transition-all duration-100 rounded-lg"></div>
+                <div className="w-full h-full bg-pink-100/10 border-2 border-pink-400/40 hover:bg-pink-300/50 transition-all duration-100 rounded-lg"></div>
+              </div>
+              <div className="flex p-4 gap-4">
+                <div className="w-full h-full bg-pink-100/10 border-2 border-pink-400/40 hover:bg-pink-300/50 transition-all duration-100 rounded-lg"></div>
+                <div className="w-full h-full bg-pink-100/10 border-2 border-pink-400/40 hover:bg-pink-300/50 transition-all duration-100 rounded-lg"></div>
+              </div>
+            </div>
+            <div className="flex p-4 gap-4">
+              <div className="w-full h-full bg-pink-100/10 border-2 border-pink-400/40 hover:bg-pink-300/50 transition-all duration-100 rounded-lg"></div>
+              <div className="w-full h-full bg-pink-100/10 border-2 border-pink-400/40 hover:bg-pink-300/50 transition-all duration-100 rounded-lg"></div>
+            </div>
+          </div>
+          <div className="grid grid-cols-2">
+            <div className="grid grid-rows-2">
+              <div className="flex p-4 gap-4">
+                <div className="w-full h-full bg-pink-100/10 border-2 border-pink-400/40 hover:bg-pink-300/50 transition-all duration-100 rounded-lg"></div>
+                <div className="w-full h-full bg-pink-100/10 border-2 border-pink-400/40 hover:bg-pink-300/50 transition-all duration-100 rounded-lg"></div>
+              </div>
+              <div className="flex p-4 gap-4">
+                <div className="w-full h-full bg-pink-100/10 border-2 border-pink-400/40 hover:bg-pink-300/50 transition-all duration-100 rounded-lg"></div>
+                <div className="w-full h-full bg-pink-100/10 border-2 border-pink-400/40 hover:bg-pink-300/50 transition-all duration-100 rounded-lg"></div>
+              </div>
+            </div>
+            <div className="flex p-4 gap-4">
+              <div className="w-full h-full bg-pink-100/10 border-2 border-pink-400/40 hover:bg-pink-300/50 transition-all duration-100 rounded-lg"></div>
+              <div className="w-full h-full bg-pink-100/10 border-2 border-pink-400/40 hover:bg-pink-300/50 transition-all duration-100 rounded-lg"></div>
+            </div>
+          </div>
+          <div className="grid grid-cols-2">
+            <div className="grid grid-rows-2">
+              <div className="flex p-4 gap-4">
+                <div className="w-full h-full bg-pink-100/10 border-2 border-pink-400/40 hover:bg-pink-300/50 transition-all duration-100 rounded-lg"></div>
+                <div className="w-full h-full bg-pink-100/10 border-2 border-pink-400/40 hover:bg-pink-300/50 transition-all duration-100 rounded-lg"></div>
+              </div>
+              <div className="flex p-4 gap-4">
+                <div className="w-full h-full bg-pink-100/10 border-2 border-pink-400/40 hover:bg-pink-300/50 transition-all duration-100 rounded-lg"></div>
+                <div className="w-full h-full bg-pink-100/10 border-2 border-pink-400/40 hover:bg-pink-300/50 transition-all duration-100 rounded-lg"></div>
+              </div>
+            </div>
+            <div className="flex p-4 gap-4">
+              <div className="w-full h-full bg-pink-100/10 border-2 border-pink-400/40 hover:bg-pink-300/50 transition-all duration-100 rounded-lg"></div>
+              <div className="w-full h-full bg-pink-100/10 border-2 border-pink-400/40 hover:bg-pink-300/50 transition-all duration-100 rounded-lg"></div>
+            </div>
+          </div>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
+        <div className="w-full h-full grid grid-rows-3">
+          <div className="grid grid-cols-2">
+            <div className="grid grid-rows-2">
+              <div className="flex p-4 gap-4">
+                <div className="w-full h-full bg-pink-100/10 border-2 border-pink-400/40 hover:bg-pink-300/50 transition-all duration-100 rounded-lg"></div>
+                <div className="w-full h-full bg-pink-100/10 border-2 border-pink-400/40 hover:bg-pink-300/50 transition-all duration-100 rounded-lg"></div>
+              </div>
+              <div className="flex p-4 gap-4">
+                <div className="w-full h-full bg-pink-100/10 border-2 border-pink-400/40 hover:bg-pink-300/50 transition-all duration-100 rounded-lg"></div>
+                <div className="w-full h-full bg-pink-100/10 border-2 border-pink-400/40 hover:bg-pink-300/50 transition-all duration-100 rounded-lg"></div>
+              </div>
+            </div>
+            <div className="flex p-4 gap-4">
+              <div className="w-full h-full bg-pink-100/10 border-2 border-pink-400/40 hover:bg-pink-300/50 transition-all duration-100 rounded-lg"></div>
+              <div className="w-full h-full bg-pink-100/10 border-2 border-pink-400/40 hover:bg-pink-300/50 transition-all duration-100 rounded-lg"></div>
+            </div>
+          </div>
+          <div className="grid grid-cols-2">
+            <div className="grid grid-rows-2">
+              <div className="flex p-4 gap-4">
+                <div className="w-full h-full bg-pink-100/10 border-2 border-pink-400/40 hover:bg-pink-300/50 transition-all duration-100 rounded-lg"></div>
+                <div className="w-full h-full bg-pink-100/10 border-2 border-pink-400/40 hover:bg-pink-300/50 transition-all duration-100 rounded-lg"></div>
+              </div>
+              <div className="flex p-4 gap-4">
+                <div className="w-full h-full bg-pink-100/10 border-2 border-pink-400/40 hover:bg-pink-300/50 transition-all duration-100 rounded-lg"></div>
+                <div className="w-full h-full bg-pink-100/10 border-2 border-pink-400/40 hover:bg-pink-300/50 transition-all duration-100 rounded-lg"></div>
+              </div>
+            </div>
+            <div className="flex p-4 gap-4">
+              <div className="w-full h-full bg-pink-100/10 border-2 border-pink-400/40 hover:bg-pink-300/50 transition-all duration-100 rounded-lg"></div>
+              <div className="w-full h-full bg-pink-100/10 border-2 border-pink-400/40 hover:bg-pink-300/50 transition-all duration-100 rounded-lg"></div>
+            </div>
+          </div>
+          <div className="grid grid-cols-2">
+            <div className="grid grid-rows-2">
+              <div className="flex p-4 gap-4">
+                <div className="w-full h-full bg-pink-100/10 border-2 border-pink-400/40 hover:bg-pink-300/50 transition-all duration-100 rounded-lg"></div>
+                <div className="w-full h-full bg-pink-100/10 border-2 border-pink-400/40 hover:bg-pink-300/50 transition-all duration-100 rounded-lg"></div>
+              </div>
+              <div className="flex p-4 gap-4">
+                <div className="w-full h-full bg-pink-100/10 border-2 border-pink-400/40 hover:bg-pink-300/50 transition-all duration-100 rounded-lg"></div>
+                <div className="w-full h-full bg-pink-100/10 border-2 border-pink-400/40 hover:bg-pink-300/50 transition-all duration-100 rounded-lg"></div>
+              </div>
+            </div>
+            <div className="flex p-4 gap-4">
+              <div className="w-full h-full bg-pink-100/10 border-2 border-pink-400/40 hover:bg-pink-300/50 transition-all duration-100 rounded-lg"></div>
+              <div className="w-full h-full bg-pink-100/10 border-2 border-pink-400/40 hover:bg-pink-300/50 transition-all duration-100 rounded-lg"></div>
+            </div>
+          </div>
+        </div>
+      </div> */}
+      <section
+        className="h-screen w-full flex flex-col justify-center items-center z-10"
+        style={{
+          backgroundImage: `url(${BgHero.src})`,
+          backgroundRepeat: "no-repeat",
+          backgroundSize: "cover",
+        }}
+      >
+        <Navbar />
+        <h1
+          className={`text-9xl fade-in max-w-6xl text-center ${heading_font.className} bg-gradient-to-tr from-white to-pink-600 bg-clip-text text-transparent`}
         >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
+          Computer Graphics Society
+        </h1>
+
+        <p
+          className={`text-gray-500 fade-in-2 text-2xl max-w-4xl text-center font-bold mt-4 ${paragraph_font.className}`}
         >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+          We, the Computer Graphics Society at IIT Kharagpur, are a passionate
+          group of students dedicated to exploring the world of game development
+          using Unity and Unreal engines.
+        </p>
+
+        <p className="text-gray-500 relative top-32">
+          <span className="inline-flex flex-col items-center animate-bounce">
+            <svg
+              className="w-8 h-8 text-pink-400"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M19 9l-7 7-7-7"
+              />
+            </svg>
+            <span className="mt-2 text-pink-400 font-semibold">
+              Scroll Down
+            </span>
+          </span>
+        </p>
+      </section>
+
+      <FeaturedProjects />
+      {/* <FeaturedProjects2 /> */}
+
+      <Footer />
     </div>
   );
 }
