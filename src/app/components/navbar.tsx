@@ -15,6 +15,7 @@ export default function Navbar() {
     { name: "Game Dev", href: "/gamedev" },
     { name: "Graphics", href: "/graphics" },
     { name: "Research", href: "/research" },
+    { name: "WebX", href: "/webx" },
     { name: "Contact", href: "/contact" },
   ];
 
