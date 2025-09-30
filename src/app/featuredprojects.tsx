@@ -205,7 +205,11 @@ const ProjectCard = React.memo<{
         border border-pink-300/10
       `}
       >
-        <div className="relative z-10 h-full bg-black/30 flex flex-col">
+        <div
+          className={`relative z-10 h-full ${
+            isActive ? "bg-black/80" : "bg-black/30"
+          } flex flex-col transition-colors duration-300`}
+        >
           <div className="relative h-40 overflow-hidden">
             <img
               src={project.image}

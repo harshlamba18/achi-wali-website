@@ -1,9 +1,7 @@
 "use client";
 
-import React, { useState, useEffect, useRef } from "react";
-import { motion, AnimatePresence, useAnimation } from "framer-motion";
-import { Canvas, useFrame } from "@react-three/fiber";
-import { OrbitControls, Text, Box, Sphere } from "@react-three/drei";
+import React, { useState, useEffect, useMemo, useCallback } from "react";
+import { motion } from "framer-motion";
 import {
   ChevronLeft,
   ChevronRight,
@@ -15,60 +13,46 @@ import {
   Smartphone,
   Globe,
   Cpu,
+  Gamepad,
+  Gamepad2,
+  GamepadIcon,
 } from "lucide-react";
-import * as THREE from "three";
 
-function FloatingSphere({
-  position,
-  color,
-  speed,
-}: {
-  position: [number, number, number];
-  color: string;
-  speed: number;
-}) {
-  const meshRef = useRef<THREE.Mesh>(null);
+import Game_LateFees from "./assets/games/late_fees.png";
+import Game_MyPrettyAlien from "./assets/games/my_pretty_alien.png";
+import Game_OpenAssassin from "./assets/games/open_assassin.png";
+import Game_PlanetEscape from "./assets/games/planet_escape.png";
+import Game_SoulMagician from "./assets/games/soul_magician.png";
+import Game_SubjectZero from "./assets/games/subject_zero.png";
 
-  useFrame((state) => {
-    if (meshRef.current) {
-      meshRef.current.position.y =
-        position[1] + Math.sin(state.clock.elapsedTime * speed) * 0.5;
-      meshRef.current.rotation.x += 0.01;
-      meshRef.current.rotation.y += 0.01;
-    }
-  });
-
+const AnimatedBackground = React.memo(() => {
   return (
-    <Sphere ref={meshRef} position={position} scale={0.3}>
-      <meshStandardMaterial color={color} transparent opacity={0.6} />
-    </Sphere>
+    <div className="absolute inset-0 overflow-hidden">
+      <div className="absolute inset-0 bg-gradient-to-br from-black via-gray-900 to-black" />
+
+      {[...Array(6)].map((_, i) => (
+        <div
+          key={i}
+          className="absolute rounded-full opacity-10 animate-float"
+          style={{
+            width: `${120 + i * 30}px`,
+            height: `${120 + i * 30}px`,
+            left: `${20 + i * 15}%`,
+            top: `${10 + i * 12}%`,
+            background: `radial-gradient(circle, ${
+              ["#ff69b4", "#ff1493", "#c71585"][i % 3]
+            }40, transparent)`,
+            animationDelay: `${i * 3}s`,
+            animationDuration: `${20 + i * 5}s`,
+            filter: "blur(2px)",
+          }}
+        />
+      ))}
+    </div>
   );
-}
+});
 
-function AnimatedBackground() {
-  return (
-    <Canvas
-      camera={{ position: [0, 0, 10], fov: 60 }}
-      style={{ position: "absolute", top: 0, left: 0, zIndex: -1 }}
-    >
-      <ambientLight intensity={0.5} />
-      <pointLight position={[10, 10, 10]} />
-
-      <FloatingSphere position={[-4, 2, -5]} color="#ff69b4" speed={0.8} />
-      <FloatingSphere position={[4, -2, -3]} color="#ff1493" speed={1.2} />
-      <FloatingSphere position={[-2, -3, -7]} color="#c71585" speed={0.6} />
-      <FloatingSphere position={[3, 3, -4]} color="#ff69b4" speed={1.0} />
-      <FloatingSphere position={[0, 4, -6]} color="#ff1493" speed={0.9} />
-      <FloatingSphere position={[-5, 0, -8]} color="#c71585" speed={0.7} />
-
-      <OrbitControls
-        enableZoom={false}
-        enablePan={false}
-        enableRotate={false}
-      />
-    </Canvas>
-  );
-}
+AnimatedBackground.displayName = "AnimatedBackground";
 
 interface Project {
   id: number;
@@ -86,68 +70,59 @@ interface Project {
 const projects: Project[] = [
   {
     id: 1,
-    title: "AI-Powered Analytics Dashboard",
-    description:
-      "Advanced machine learning dashboard with real-time data visualization and predictive analytics capabilities.",
-    technologies: ["React", "Python", "TensorFlow", "D3.js", "PostgreSQL"],
-    image:
-      "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=500&h=300&fit=crop",
+    title: "Late Fees",
+    description: "Late Fees.",
+    technologies: ["Unreal Engine", "Unreal Engine 5", "Epic Games"],
+    image: Game_LateFees.src,
     demoUrl: "#",
     githubUrl: "#",
-    category: "AI/ML",
-    icon: <Cpu className="w-6 h-6" />,
+    category: "UE5",
+    icon: <Gamepad className="w-6 h-6" />,
     gradient: "from-pink-500 via-purple-500 to-indigo-600",
   },
   {
     id: 2,
-    title: "Blockchain DeFi Platform",
-    description:
-      "Decentralized finance platform with smart contracts, yield farming, and NFT marketplace integration.",
-    technologies: ["Solidity", "Web3.js", "React", "Node.js", "IPFS"],
-    image:
-      "https://images.unsplash.com/photo-1639762681485-074b7f938ba0?w=500&h=300&fit=crop",
+    title: "My Pretty Alien",
+    description: "My Pretty Alien.",
+    technologies: ["Unreal Engine", "Unreal Engine 5", "Epic Games"],
+
+    image: Game_MyPrettyAlien.src,
     demoUrl: "#",
     githubUrl: "#",
-    category: "Blockchain",
-    icon: <Database className="w-6 h-6" />,
+    category: "Gaming",
+    icon: <Gamepad2 className="w-6 h-6" />,
     gradient: "from-pink-600 via-rose-500 to-orange-400",
   },
   {
     id: 3,
-    title: "Mobile AR Experience",
-    description:
-      "Immersive augmented reality mobile application with 3D object recognition and spatial mapping.",
-    technologies: ["Unity", "ARCore", "C#", "Firebase", "Blender"],
-    image:
-      "https://images.unsplash.com/photo-1592478411213-6153e4ebc696?w=500&h=300&fit=crop",
+    title: "Open Assassin",
+    description: "Open Assassin.",
+    technologies: ["Unreal Engine", "Unreal Engine 5", "Epic Games"],
+    image: Game_OpenAssassin.src,
     demoUrl: "#",
     githubUrl: "#",
-    category: "Mobile/AR",
-    icon: <Smartphone className="w-6 h-6" />,
+    category: "Gaming",
+    icon: <Gamepad className="w-6 h-6" />,
     gradient: "from-pink-500 via-red-500 to-yellow-500",
   },
   {
     id: 4,
-    title: "Cloud-Native Microservices",
-    description:
-      "Scalable microservices architecture with Kubernetes orchestration and event-driven communication.",
-    technologies: ["Docker", "Kubernetes", "Go", "gRPC", "Redis"],
-    image:
-      "https://images.unsplash.com/photo-1667372393119-3d4c48d07fc9?w=500&h=300&fit=crop",
+    title: "Planet Escape",
+    description: "Planet Escape.",
+    technologies: ["Unreal Engine", "Unreal Engine 5", "Epic Games"],
+    image: Game_PlanetEscape.src,
     demoUrl: "#",
     githubUrl: "#",
-    category: "DevOps",
-    icon: <Globe className="w-6 h-6" />,
+    category: "Gaming",
+    icon: <Gamepad2 className="w-6 h-6" />,
     gradient: "from-pink-400 via-purple-400 to-blue-500",
   },
   {
     id: 5,
-    title: "Real-time Gaming Platform",
-    description:
-      "Multiplayer gaming platform with WebSocket connections, matchmaking, and tournament systems.",
-    technologies: ["Node.js", "Socket.io", "React", "MongoDB", "WebGL"],
-    image:
-      "https://images.unsplash.com/photo-1542751371-adc38448a05e?w=500&h=300&fit=crop",
+    title: "Soul Magician",
+    description: "Soul Magician.",
+    technologies: ["Unreal Engine", "Unreal Engine 5", "Epic Games"],
+    image: Game_SoulMagician.src,
     demoUrl: "#",
     githubUrl: "#",
     category: "Gaming",
@@ -156,248 +131,194 @@ const projects: Project[] = [
   },
   {
     id: 6,
-    title: "Full-Stack E-commerce",
-    description:
-      "Modern e-commerce platform with payment integration, inventory management, and admin dashboard.",
-    technologies: ["Next.js", "Stripe", "Prisma", "PostgreSQL", "Vercel"],
-    image:
-      "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=500&h=300&fit=crop",
+    title: "Subject Zero",
+    description: "Subject Zero.",
+    technologies: ["Unreal Engine", "Unreal Engine 5", "Epic Games"],
+    image: Game_SubjectZero.src,
     demoUrl: "#",
     githubUrl: "#",
-    category: "E-commerce",
-    icon: <Code className="w-6 h-6" />,
+    category: "Gaming",
+    icon: <Gamepad className="w-6 h-6" />,
     gradient: "from-pink-500 via-pink-600 to-red-500",
   },
 ];
 
-const ProjectCard: React.FC<{
+const ProjectCard = React.memo<{
   project: Project;
   index: number;
   activeIndex: number;
   totalProjects: number;
-}> = ({ project, index, activeIndex, totalProjects }) => {
-  const getCardPosition = () => {
+  onClick: () => void;
+}>(({ project, index, activeIndex, totalProjects, onClick }) => {
+  const position = useMemo(() => {
     const angle = ((index - activeIndex) * 360) / totalProjects;
-    const radius = 350;
+    const radius = 300;
     const x = Math.sin((angle * Math.PI) / 180) * radius;
     const z = Math.cos((angle * Math.PI) / 180) * radius;
-    const y = Math.abs(Math.sin((angle * Math.PI) / 180)) * -50;
+    const y = Math.abs(Math.sin((angle * Math.PI) / 180)) * -30;
 
     return { x, y, z, rotateY: -angle };
-  };
+  }, [index, activeIndex, totalProjects]);
 
-  const position = getCardPosition();
   const isActive = index === activeIndex;
   const distance = Math.abs(index - activeIndex);
-  const opacity = distance === 0 ? 1 : distance === 1 ? 0.7 : 0.4;
-  const scale = distance === 0 ? 1 : distance === 1 ? 0.8 : 0.6;
+
+  const cardStyle = useMemo(
+    () => ({
+      opacity: distance === 0 ? 1 : distance === 1 ? 0.7 : 0.4,
+      scale: distance === 0 ? 1 : distance === 1 ? 0.85 : 0.7,
+    }),
+    [distance]
+  );
 
   return (
     <motion.div
-      className="absolute"
+      className="absolute cursor-pointer"
       animate={{
         x: position.x,
         y: position.y,
         z: position.z,
         rotateY: position.rotateY,
-        opacity,
-        scale,
+        ...cardStyle,
       }}
       transition={{
         type: "spring",
-        stiffness: 100,
-        damping: 30,
-        duration: 0.8,
+        stiffness: 80,
+        damping: 25,
+        duration: 0.6,
       }}
+      onClick={onClick}
       style={{
         transformStyle: "preserve-3d",
-        perspective: "1000px",
       }}
     >
       <div
         className={`
-        relative w-80 h-96 rounded-2xl overflow-hidden cursor-pointer
+        relative w-72 h-80 rounded-xl overflow-hidden
         ${
           isActive
-            ? "shadow-2xl shadow-pink-500/30"
-            : "shadow-lg shadow-black/20"
+            ? "shadow-xl shadow-pink-500/20"
+            : "shadow-md shadow-black/10"
         }
-        transition-all duration-500 hover:shadow-2xl hover:shadow-pink-400/40
+        transition-shadow duration-300
         bg-gradient-to-br ${project.gradient}
-        border border-pink-300/20 backdrop-blur-sm
+        border border-pink-300/10
       `}
       >
-        <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-pink-400/20 to-purple-600/20 blur-sm"></div>
-
-        <div className="relative z-10 h-full bg-black/40 backdrop-blur-sm flex flex-col">
-          <div className="relative h-48 overflow-hidden">
+        <div className="relative z-10 h-full bg-black/30 flex flex-col">
+          <div className="relative h-40 overflow-hidden">
             <img
               src={project.image}
               alt={project.title}
-              className="w-full h-full object-cover transition-transform duration-500 hover:scale-110"
+              className="w-full h-full object-cover"
+              loading="lazy"
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+            <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
 
-            <div className="absolute top-4 left-4 flex items-center space-x-2 bg-pink-500/90 backdrop-blur-sm rounded-full px-3 py-1">
+            <div className="absolute top-3 left-3 flex items-center space-x-2 bg-pink-500/80 rounded-full px-2 py-1">
               {project.icon}
-              <span className="text-white text-sm font-medium">
+              <span className="text-white text-xs font-medium">
                 {project.category}
               </span>
             </div>
           </div>
 
-          <div className="flex-1 p-6 flex flex-col">
-            <h3 className="text-xl font-bold text-white mb-2 line-clamp-2">
+          <div className="flex-1 p-4 flex flex-col">
+            <h3 className="text-lg font-bold text-white mb-2 line-clamp-2">
               {project.title}
             </h3>
 
-            <p className="text-pink-100 text-sm mb-4 line-clamp-3 flex-grow">
+            <p className="text-pink-100 text-sm mb-3 line-clamp-2 flex-grow">
               {project.description}
             </p>
 
-            <div className="flex flex-wrap gap-2 mb-4">
+            <div className="flex flex-wrap gap-1 mb-3">
               {project.technologies.slice(0, 3).map((tech, techIndex) => (
                 <span
                   key={techIndex}
-                  className="px-2 py-1 bg-pink-500/20 backdrop-blur-sm rounded-md text-xs text-pink-200 border border-pink-400/30"
+                  className="px-2 py-1 bg-pink-500/20 rounded text-xs text-pink-200 border border-pink-400/20"
                 >
                   {tech}
                 </span>
               ))}
               {project.technologies.length > 3 && (
-                <span className="px-2 py-1 bg-pink-500/20 backdrop-blur-sm rounded-md text-xs text-pink-200 border border-pink-400/30">
+                <span className="px-2 py-1 bg-pink-500/20 rounded text-xs text-pink-200 border border-pink-400/20">
                   +{project.technologies.length - 3}
                 </span>
               )}
             </div>
 
-            <div className="flex space-x-3">
-              <motion.button
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                className="flex-1 bg-pink-500/80 hover:bg-pink-500 backdrop-blur-sm text-white px-4 py-2 rounded-lg transition-colors duration-200 flex items-center justify-center space-x-2"
-              >
-                <ExternalLink className="w-4 h-4" />
+            <div className="flex space-x-2">
+              <button className="flex-1 bg-pink-500/70 hover:bg-pink-500/90 text-white px-3 py-2 rounded text-sm transition-colors duration-200 flex items-center justify-center space-x-1">
+                <ExternalLink className="w-3 h-3" />
                 <span>Demo</span>
-              </motion.button>
+              </button>
 
-              <motion.button
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                className="bg-black/50 hover:bg-black/70 backdrop-blur-sm text-white px-4 py-2 rounded-lg transition-colors duration-200 flex items-center justify-center"
-              >
-                <Github className="w-4 h-4" />
-              </motion.button>
+              <button className="bg-black/40 hover:bg-black/60 text-white px-3 py-2 rounded text-sm transition-colors duration-200 flex items-center justify-center">
+                <Github className="w-3 h-3" />
+              </button>
             </div>
           </div>
         </div>
-
-        {isActive && (
-          <div className="absolute inset-0 pointer-events-none">
-            {[...Array(6)].map((_, i) => (
-              <motion.div
-                key={i}
-                className="absolute w-2 h-2 bg-pink-400 rounded-full"
-                animate={{
-                  x: [0, Math.random() * 300, 0],
-                  y: [0, Math.random() * 400, 0],
-                  opacity: [0, 1, 0],
-                }}
-                transition={{
-                  duration: 3,
-                  repeat: Infinity,
-                  delay: i * 0.5,
-                }}
-                style={{
-                  left: Math.random() * 100 + "%",
-                  top: Math.random() * 100 + "%",
-                }}
-              />
-            ))}
-          </div>
-        )}
       </div>
     </motion.div>
   );
-};
+});
+
+ProjectCard.displayName = "ProjectCard";
 
 const FeaturedProjects: React.FC = () => {
   const [activeIndex, setActiveIndex] = useState(0);
   const [isAutoRotating, setIsAutoRotating] = useState(true);
-  const controls = useAnimation();
 
-  // Auto-rotation effect
   useEffect(() => {
     if (!isAutoRotating) return;
 
     const interval = setInterval(() => {
       setActiveIndex((prev) => (prev + 1) % projects.length);
-    }, 4000);
+    }, 5000);
 
     return () => clearInterval(interval);
   }, [isAutoRotating]);
 
-  const nextProject = () => {
+  const nextProject = useCallback(() => {
     setIsAutoRotating(false);
     setActiveIndex((prev) => (prev + 1) % projects.length);
-    setTimeout(() => setIsAutoRotating(true), 10000);
-  };
+    setTimeout(() => setIsAutoRotating(true), 8000);
+  }, []);
 
-  const prevProject = () => {
+  const prevProject = useCallback(() => {
     setIsAutoRotating(false);
     setActiveIndex((prev) => (prev - 1 + projects.length) % projects.length);
-    setTimeout(() => setIsAutoRotating(true), 10000);
-  };
+    setTimeout(() => setIsAutoRotating(true), 8000);
+  }, []);
+
+  const selectProject = useCallback((index: number) => {
+    setIsAutoRotating(false);
+    setActiveIndex(index);
+    setTimeout(() => setIsAutoRotating(true), 8000);
+  }, []);
 
   return (
-    <section className="relative min-h-screen bg-gradient-to-br from-black via-gray-900 to-black overflow-hidden">
+    <section className="relative min-h-screen overflow-hidden">
       <AnimatedBackground />
-
-      <div className="absolute inset-0 overflow-hidden">
-        {[...Array(20)].map((_, i) => (
-          <motion.div
-            key={i}
-            className="absolute rounded-full bg-gradient-to-r from-pink-500/10 to-purple-500/10 blur-xl"
-            style={{
-              width: Math.random() * 300 + 100,
-              height: Math.random() * 300 + 100,
-              left: Math.random() * 100 + "%",
-              top: Math.random() * 100 + "%",
-            }}
-            animate={{
-              x: [0, Math.random() * 400 - 200, 0],
-              y: [0, Math.random() * 400 - 200, 0],
-              scale: [1, Math.random() * 0.5 + 0.5, 1],
-            }}
-            transition={{
-              duration: Math.random() * 10 + 10,
-              repeat: Infinity,
-              ease: "linear",
-            }}
-          />
-        ))}
-      </div>
 
       <div className="relative z-10 container mx-auto px-4 py-16">
         <motion.div
-          initial={{ opacity: 0, y: -50 }}
+          initial={{ opacity: 0, y: -30 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-          className="text-center mb-16"
+          transition={{ duration: 0.6 }}
+          className="text-center mb-12"
         >
-          <h1 className="text-6xl md:text-7xl font-bold bg-gradient-to-r from-pink-400 via-pink-500 to-purple-600 bg-clip-text text-transparent mb-6">
+          <h1 className="text-5xl md:text-6xl font-bold bg-gradient-to-r from-pink-400 via-pink-500 to-purple-600 bg-clip-text text-transparent mb-4">
             Featured Projects
           </h1>
-          <p className="text-xl text-pink-200 max-w-2xl mx-auto leading-relaxed">
-            Explore cutting-edge technologies and innovative solutions crafted
-            with passion and precision
+          <p className="text-lg text-pink-200 max-w-2xl mx-auto">
+            Explore cutting-edge technologies and innovative solutions
           </p>
         </motion.div>
 
-        <div
-          className="relative h-[600px] flex items-center justify-center"
-          style={{ perspective: "1000px" }}
-        >
+        <div className="relative h-[500px] flex items-center justify-center perspective-1000">
           {projects.map((project, index) => (
             <ProjectCard
               key={project.id}
@@ -405,66 +326,40 @@ const FeaturedProjects: React.FC = () => {
               index={index}
               activeIndex={activeIndex}
               totalProjects={projects.length}
+              onClick={() => selectProject(index)}
             />
           ))}
         </div>
 
-        <div className="flex justify-center items-center space-x-8 mt-12">
-          <motion.button
-            whileHover={{ scale: 1.1 }}
-            whileTap={{ scale: 0.9 }}
+        <div className="flex justify-center items-center space-x-6 mt-8">
+          <button
             onClick={prevProject}
-            className="p-4 bg-pink-500/20 hover:bg-pink-500/40 backdrop-blur-sm rounded-full text-pink-300 hover:text-white transition-all duration-200 border border-pink-400/30"
+            className="p-3 bg-pink-500/20 hover:bg-pink-500/30 rounded-full text-pink-300 hover:text-white transition-all duration-200 border border-pink-400/20"
           >
-            <ChevronLeft className="w-6 h-6" />
-          </motion.button>
+            <ChevronLeft className="w-5 h-5" />
+          </button>
 
-          <div className="flex space-x-3">
+          <div className="flex space-x-2">
             {projects.map((_, index) => (
-              <motion.button
+              <button
                 key={index}
-                onClick={() => {
-                  setIsAutoRotating(false);
-                  setActiveIndex(index);
-                  setTimeout(() => setIsAutoRotating(true), 10000);
-                }}
-                className={`w-3 h-3 rounded-full transition-all duration-300 ${
+                onClick={() => selectProject(index)}
+                className={`w-2 h-2 rounded-full transition-all duration-200 ${
                   index === activeIndex
-                    ? "bg-pink-500 shadow-lg shadow-pink-500/50"
-                    : "bg-pink-300/30 hover:bg-pink-300/50"
+                    ? "bg-pink-500 shadow-sm shadow-pink-500/50"
+                    : "bg-pink-300/20 hover:bg-pink-300/40"
                 }`}
-                whileHover={{ scale: 1.2 }}
-                whileTap={{ scale: 0.8 }}
               />
             ))}
           </div>
 
-          <motion.button
-            whileHover={{ scale: 1.1 }}
-            whileTap={{ scale: 0.9 }}
+          <button
             onClick={nextProject}
-            className="p-4 bg-pink-500/20 hover:bg-pink-500/40 backdrop-blur-sm rounded-full text-pink-300 hover:text-white transition-all duration-200 border border-pink-400/30"
+            className="p-3 bg-pink-500/20 hover:bg-pink-500/30 rounded-full text-pink-300 hover:text-white transition-all duration-200 border border-pink-400/20"
           >
-            <ChevronRight className="w-6 h-6" />
-          </motion.button>
+            <ChevronRight className="w-5 h-5" />
+          </button>
         </div>
-
-        {/* <div className="flex justify-center mt-8">
-          <motion.button
-            onClick={() => setIsAutoRotating(!isAutoRotating)}
-            className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 ${
-              isAutoRotating
-                ? "bg-pink-500/20 text-pink-300 border border-pink-400/30"
-                : "bg-gray-700/50 text-gray-400 border border-gray-600/30"
-            }`}
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-          >
-            {isAutoRotating
-              ? "⏸️ Pause Auto-Rotation"
-              : "▶️ Start Auto-Rotation"}
-          </motion.button>
-        </div> */}
       </div>
     </section>
   );

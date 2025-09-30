@@ -1,5 +1,5 @@
 import { Squada_One } from "next/font/google";
-import CGSLogo from "../assets/cgslogo.png";
+import CGSLogo from "../assets/logo.png";
 import Wave1 from "../assets/wave-1.svg";
 import Wave2 from "../assets/wave-2.svg";
 import Wave3 from "../assets/wave-3.svg";
