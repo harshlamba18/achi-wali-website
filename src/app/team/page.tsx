@@ -23,13 +23,13 @@ export default function GameDev() {
                 Game Development Team
               </span> */}
 
-              <h1 className="text-5xl sm:text-6xl md:text-7xl font-bold mb-6 tracking-tight drop-shadow-lg">
+              <h1 className="text-5xl sm:text-6xl md:text-7xl font-bold mb-6 tracking-tight drop-shadow-lg fade-in">
                 Our <span className="text-pink-400">Team</span>
               </h1>
 
               <div className="w-24 h-1 bg-pink-500 mx-auto mb-8"></div>
 
-              <p className="text-lg sm:text-xl md:text-2xl max-w-3xl mx-auto leading-relaxed text-gray-200 mb-10">
+              <p className="text-lg sm:text-xl md:text-2xl max-w-3xl mx-auto leading-relaxed text-gray-200 mb-10 fade-in-2">
                 We're a diverse group of passionate developers, artists, and
                 storytellers committed to creating immersive gaming experiences
                 that push creative and technical boundaries.
