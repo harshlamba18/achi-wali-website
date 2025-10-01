@@ -168,7 +168,7 @@ export default function BlogList({ posts, categories }: BlogListProps) {
                         <div className="flex items-center gap-4">
                           <div className="flex items-center gap-1">
                             <Calendar className="w-3 h-3" />
-                            <span>
+                            <span suppressHydrationWarning={true}>
                               {new Date(post.date).toLocaleDateString()}
                             </span>
                           </div>

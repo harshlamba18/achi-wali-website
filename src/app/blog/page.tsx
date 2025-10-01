@@ -168,7 +168,7 @@ export default async function Blog() {
                           <div className="flex items-center gap-4">
                             <div className="flex items-center gap-1">
                               <Calendar className="w-4 h-4" />
-                              <span>
+                              <span suppressHydrationWarning={true}>
                                 {new Date(post.date).toLocaleDateString()}
                               </span>
                             </div>
