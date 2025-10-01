@@ -50,7 +50,7 @@ export default function Games() {
     setIsAutoPlaying(false);
   };
 
-  const selectGame = (index) => {
+  const selectGame = (index: any) => {
     setSelectedGame(index);
     setIsAutoPlaying(false);
   };
