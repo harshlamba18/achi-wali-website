@@ -11,12 +11,12 @@ export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
 
   const navItems = [
+    { name: "Games", href: "/games" },
+    { name: "Projects", href: "/projects" },
+    { name: "Blog", href: "/blog" },
+    { name: "Store", href: "/store" },
     { name: "Team", href: "/team" },
-    { name: "Game Dev", href: "/gamedev" },
-    { name: "Graphics", href: "/graphics" },
-    { name: "Research", href: "/research" },
-    { name: "WebX", href: "/webx" },
-    { name: "Contact", href: "/contact" },
+    // { name: "Contact", href: "/contact" },
   ];
 
   useEffect(() => {
