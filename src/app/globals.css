@@ -1,6 +1,5 @@
 @import "tailwindcss";
 
-/* Custom scrollbar for webkit browsers */
 ::-webkit-scrollbar {
   width: 8px;
 }
@@ -18,7 +17,6 @@
   background: linear-gradient(45deg, #be185d, #9d174d);
 }
 
-/* Global styles */
 html {
   scroll-behavior: smooth;
 }
@@ -30,7 +28,6 @@ body {
   overflow-x: hidden;
 }
 
-/* Line clamp utilities */
 .line-clamp-2 {
   display: -webkit-box;
   -webkit-line-clamp: 2;
@@ -47,14 +44,12 @@ body {
   overflow: hidden;
 }
 
-/* Glassmorphism effect */
 .glass {
   background: rgba(255, 255, 255, 0.1);
   backdrop-filter: blur(10px);
   border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
-/* Custom animations */
 @keyframes float {
   0%, 100% {
     transform: translateY(0px) scale(1);
@@ -159,7 +154,6 @@ body {
   animation: gradient-shift 4s ease infinite;
 }
 
-/* Particle effects */
 .particle {
   position: absolute;
   width: 4px;
@@ -169,7 +163,6 @@ body {
   animation: float 4s ease-in-out infinite;
 }
 
-/* 3D Transform utilities */
 .preserve-3d {
   transform-style: preserve-3d;
 }
@@ -178,7 +171,6 @@ body {
   perspective: 1000px;
 }
 
-/* Performance optimizations */
 .will-change-transform {
   will-change: transform;
 }
@@ -191,7 +183,6 @@ body {
   transform: translateZ(0);
 }
 
-/* Reduce motion for accessibility */
 @media (prefers-reduced-motion: reduce) {
   .animate-float {
     animation: none;
