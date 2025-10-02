@@ -1,0 +1,12 @@
+services:
+  next:
+    build:
+        context: ./next
+        dockerfile: ./next/Dockerfile
+    # restart: always
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./next:/usr/src/app
+      - /usr/src/app/node_modules
+
