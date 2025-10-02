@@ -2,7 +2,7 @@ services:
   next:
     build:
         context: ./next
-        dockerfile: ./next/Dockerfile
+        dockerfile: Dockerfile
     # restart: always
     ports:
       - "3000:3000"
