@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { useSpring, animated, config } from "@react-spring/web";
+import { useSpring, useSprings, animated, config } from "@react-spring/web";
 import styled from "styled-components";
 import { motion } from "framer-motion";
 import Image from "next/image";
@@ -324,11 +324,12 @@ const FeaturedProjects2: React.FC = () => {
     };
   };
 
-  const cardSprings = projects.map((_, index) => {
-    const { x, z, scale, opacity, rotateY } = calculateCardPosition(index);
+  const cardSprings = useSprings(
+    projects.length,
+    projects.map((_, index) => {
+      const { x, z, scale, opacity, rotateY } = calculateCardPosition(index);
 
-    return useSpring({
-      to: {
+      return {
         transform: `translateX(${x}px) translateZ(${z}px) rotateY(${rotateY}deg) scale(${scale})`,
         opacity,
         zIndex:
@@ -338,10 +339,10 @@ const FeaturedProjects2: React.FC = () => {
               Math.abs(
                 (index - activeIndex + projects.length) % projects.length
               ),
-      },
-      config: config.gentle,
-    });
-  });
+        config: config.gentle,
+      };
+    })
+  );
 
   useEffect(() => {
     let timer: NodeJS.Timeout;
