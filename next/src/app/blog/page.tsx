@@ -23,7 +23,40 @@ const robotoFont = Roboto({
   subsets: ["latin"],
 });
 
-const processPost = (post: any) => {
+type Post = {
+  slug: string;
+  title?: string;
+  description?: string;
+  excerpt?: string;
+  date?: string;
+  readTime?: string;
+  author?: string;
+  category?: string;
+  tags?: string[];
+  featured?: boolean;
+  image?: string;
+  likes?: number;
+  comments?: number;
+  views?: number;
+};
+
+type ProcessedPost = {
+  slug: string;
+  title: string;
+  description: string;
+  date: string;
+  readTime: string;
+  author: string;
+  category: string;
+  tags: string[];
+  featured: boolean;
+  image: string;
+  likes: number;
+  comments: number;
+  views: number;
+};
+
+const processPost = (post: Post): ProcessedPost => {
   return {
     slug: post.slug,
     title: post.title || "Untitled Post",

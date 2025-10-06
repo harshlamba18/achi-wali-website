@@ -30,9 +30,9 @@ export default function GameDev() {
               <div className="w-24 h-1 bg-pink-500 mx-auto mb-8"></div>
 
               <p className="text-lg sm:text-xl md:text-2xl max-w-3xl mx-auto leading-relaxed text-gray-200 mb-10 fade-in-2">
-                We're a diverse group of passionate developers, artists, and
-                storytellers committed to creating immersive gaming experiences
-                that push creative and technical boundaries.
+                We&apos;re a diverse group of passionate developers, artists,
+                and storytellers committed to creating immersive gaming
+                experiences that push creative and technical boundaries.
               </p>
 
               {/* <div className="flex flex-col sm:flex-row justify-center gap-4 mt-8">

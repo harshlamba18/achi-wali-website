@@ -4,13 +4,20 @@ import { getAllPosts, getPost } from "../lib/mdx";
 import "../lib/mdx.css";
 
 import Navbar from "../../components/navbar";
+import Link from "next/link";
 
 export async function generateStaticParams() {
   const posts = getAllPosts();
   return posts.map((post) => ({ slug: post.slug }));
 }
 
-export default async function BlogPostPage({ params }: any) {
+interface BlogPostPageProps {
+  params: {
+    slug: string;
+  };
+}
+
+export default async function BlogPostPage({ params }: BlogPostPageProps) {
   const { content, metadata } = await getPost((await params).slug);
   const post = { content, metadata };
 
@@ -22,7 +29,7 @@ export default async function BlogPostPage({ params }: any) {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
             <div className="flex items-center space-x-6">
-              <a
+              <Link
                 href="/blog"
                 className="text-pink-400 hover:text-pink-300 transition-colors"
               >
@@ -39,7 +46,7 @@ export default async function BlogPostPage({ params }: any) {
                     d="M15 19l-7-7 7-7"
                   />
                 </svg>
-              </a>
+              </Link>
               <div className="text-gray-400 text-sm font-medium">CGS Blog</div>
             </div>
 

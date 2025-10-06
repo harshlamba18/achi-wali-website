@@ -25,7 +25,7 @@ export function getAllPosts() {
   });
 }
 
-export async function getPost(slug: any) {
+export async function getPost(slug: string) {
   const fPath = path.join(postsDir, `${slug}.mdx`);
   const fCont = fs.readFileSync(fPath, "utf8");
 
