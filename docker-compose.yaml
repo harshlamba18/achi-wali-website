@@ -1,7 +1,25 @@
+version: '3.8'
+
 services:
-  next:
-    build:
-      context: ./next
-      dockerfile: Dockerfile
+  next-app:
+    build: ./next
+    container_name: achi_wali_website_next_app
     ports:
-      - "3001:3000"
+      - "${APP_PORT}:3000"
+    env_file:
+      - .env
+    depends_on:
+      - mongo
+    restart: unless-stopped
+
+  mongo:
+    image: mongo:latest
+    container_name: mongodb
+    env_file:
+      - .env
+    volumes:
+      - mongodb_data:/data/db
+    restart: unless-stopped
+
+volumes:
+  mongodb_data:
