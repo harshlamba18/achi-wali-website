@@ -14,19 +14,28 @@ const GET = createHandler({
             if (connection.connections[0].readyState === 1) {
                 dbConnected = true;
             }
-        } catch (error) { }
+        } catch { }
 
         try {
             await verifySMTPConnection();
 
             smtpConnected = true;
-        } catch (error) { }
+        } catch { }
 
-        return NextResponse.json({
+        const responseData = {
             serverStatus: "ONLINE",
             databaseConnection: dbConnected ? "CONNECTED" : "DISCONNECTED",
             smtpConnected: smtpConnected ? "CONNECTED" : "DISCONNECTED",
-        });
+        };
+
+        // Return 503 Service Unavailable if critical services are down
+        // Database is critical, SMTP is not critical for basic functionality
+        if (!dbConnected) {
+            return NextResponse.json(responseData, { status: 503 });
+        }
+
+        // Return 200 OK if all critical services are healthy
+        return NextResponse.json(responseData, { status: 200 });
     }
 });
 
