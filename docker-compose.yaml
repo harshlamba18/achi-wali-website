@@ -1,7 +1,38 @@
+version: '3.8'
+
 services:
-  next:
-    build:
-      context: ./next
-      dockerfile: Dockerfile
+  next-app:
+    build: ./next
+    container_name: achi_wali_website_next_app
     ports:
-      - "3001:3000"
+      - "${APP_PORT}:3000"
+    env_file:
+      - .env
+    depends_on:
+      mongo:
+        condition: service_healthy
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000/api/misc/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  mongo:
+    image: mongo:latest
+    container_name: mongodb
+    env_file:
+      - .env
+    volumes:
+      - mongodb_data:/data/db
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "mongosh", "--eval", "db.adminCommand('ping')"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+
+volumes:
+  mongodb_data:
