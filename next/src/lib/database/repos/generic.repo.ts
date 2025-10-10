@@ -4,7 +4,7 @@ import connectToDatabase from '@/lib/database/db';
 
 
 class GenericRepository<FullT, CreateT, UpdateT> {
-    constructor(protected readonly model: Model<any>) { }
+    constructor(protected readonly model: Model<FullT>) { }
 
     protected async ensureDbConnection() {
         await connectToDatabase();
@@ -98,8 +98,8 @@ class GenericRepository<FullT, CreateT, UpdateT> {
         await this.ensureDbConnection();
 
         try {
-            const doc = await this.model.findByIdAndUpdate(id, update, { session }).exec();
-            return doc ? doc.toObject() : null;
+            const doc = await this.model.findByIdAndUpdate(id, update, { session, new: true }).exec();
+            return doc ? doc.toObject() as FullT : null;
         } catch (error) {
             throw new AppError('Failed to update document.', {
                 id,
@@ -111,7 +111,7 @@ class GenericRepository<FullT, CreateT, UpdateT> {
 
     async updateMany(
         filter: FilterQuery<FullT>,
-        update: UpdateQuery<UpdateT>,
+        update: UpdateQuery<FullT>,
         session?: ClientSession,
     ): Promise<void> {
         await this.ensureDbConnection();

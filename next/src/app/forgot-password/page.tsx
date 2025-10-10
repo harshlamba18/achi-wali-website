@@ -118,7 +118,7 @@ export default function ForgotPassword() {
                     <p
                       className={`text-gray-400 ${paragraph_font.className} text-lg`}
                     >
-                      Don't worry, we'll send you reset instructions.
+                      Don&apos;t worry, we&apos;ll send you reset instructions.
                     </p>
                   </div>
 
@@ -223,7 +223,7 @@ export default function ForgotPassword() {
                     <p
                       className={`text-gray-400 ${paragraph_font.className} text-lg mb-6`}
                     >
-                      We've sent a password reset link to
+                      We&apos;ve sent a password reset link to
                     </p>
                     <p
                       className={`text-pink-400 ${paragraph_font.className} text-lg font-semibold mb-8 break-all`}

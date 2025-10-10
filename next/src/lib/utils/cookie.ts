@@ -6,7 +6,7 @@ const cookieOptions = {
     jwt: (() => {
         const httpsEnforced = getEnvVariable("HTTPS_ENFORCED", true);
 
-        let options: ICookieOptions = {
+        const options: ICookieOptions = {
             maxAge: 2700000,
             httpOnly: true,
             secure: true,
