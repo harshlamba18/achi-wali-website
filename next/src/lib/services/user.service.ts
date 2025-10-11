@@ -12,37 +12,31 @@ import { Types } from "mongoose";
 import { withSession } from "../database/db";
 
 
-namespace __internal__ {
-    export const userExportLimitedInfo = (user: IUser) => {
-        return {
-            _id: user._id.toHexString(),
-            name: user.name,
-            email: user.email,
-            profileImgMediaKey: user.profileImgMediaKey,
-            roles: user.roles,
-            teamId: user.teamId?.toHexString() ?? null,
-            links: user.links,
-            createAt: user.createdAt,
-        }
-    }
+const __internal__ = {
+    userExportLimitedInfo: (user: IUser) => ({
+        _id: user._id.toHexString(),
+        name: user.name,
+        email: user.email,
+        profileImgMediaKey: user.profileImgMediaKey,
+        roles: user.roles,
+        teamId: user.teamId?.toHexString() ?? null,
+        links: user.links,
+        createAt: user.createdAt,
+    }),
 
-    export const userExportUnrestrictedInfo = (user: IUser) => {
-        return {
-            _id: user._id.toHexString(),
-            name: user.name,
-            email: user.email,
-            profileImgMediaKey: user.profileImgMediaKey,
-            phoneNumber: user.phoneNumber,
-            roles: user.roles,
-            teamId: user.teamId?.toHexString() ?? null,
-            links: user.links,
-            createdAt: user.createdAt,
-            updatedAt: user.updatedAt,
-        }
-    }
-}
-
-
+    userExportUnrestrictedInfo: (user: IUser) => ({
+        _id: user._id.toHexString(),
+        name: user.name,
+        email: user.email,
+        profileImgMediaKey: user.profileImgMediaKey,
+        phoneNumber: user.phoneNumber,
+        roles: user.roles,
+        teamId: user.teamId?.toHexString() ?? null,
+        links: user.links,
+        createdAt: user.createdAt,
+        updatedAt: user.updatedAt,
+    }),
+};
 const get: ServiceSignature<{
     _id: Types.ObjectId,
 }, SECs.User.Get, false
@@ -91,7 +85,7 @@ const getUnrestricted: ServiceSignature<{
     };
 };
 
-const getAll: ServiceSignature<{}, SECs.User.GetAll, false
+const getAll: ServiceSignature<object, SECs.User.GetAll, false
 > = async (_) => {
     const users = await userRepository.findAll({});
 

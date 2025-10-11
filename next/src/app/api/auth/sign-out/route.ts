@@ -5,13 +5,18 @@ import { SuccessResponseCodesEnum } from '@/lib/types/index.types';
 import { cookieOptions } from '@/lib/utils/cookie';
 import { SESSION_COOKIE_NAME } from '@/lib/config/constants';
 
+type SignoutResponse = {
+    // edit this type while setup
+    token: string;
+}
+
 const POST = createHandler({
     validate: authValidator.signOut,
     requireAuth: true,
     serviceOptions: {
         service: authService.signOut,
         successCode: SuccessResponseCodesEnum.OK,
-        onSuccess: (sDOut: any) => {
+        onSuccess: (sDOut: SignoutResponse) => {
             return {
                 responseData: {},
                 cookies: [{

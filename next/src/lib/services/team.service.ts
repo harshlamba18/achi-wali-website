@@ -33,7 +33,7 @@ const get: ServiceSignature<{
     };
 };
 
-const getAll: ServiceSignature<{}, SECs.Team.GetAll, false
+const getAll: ServiceSignature<object, SECs.Team.GetAll, false
 > = async (_) => {
     const teams = await teamRepository.findAll({});
 

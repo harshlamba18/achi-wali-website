@@ -966,7 +966,7 @@ export default function Dashboard() {
                   <p
                     className={`text-gray-500 text-sm ${paragraph_font.className}`}
                   >
-                    Be descriptive about your project's purpose and scope
+                    Be descriptive about your project&apos;s purpose and scope
                   </p>
                   <p
                     className={`text-gray-500 text-sm ${paragraph_font.className}`}

@@ -16,7 +16,7 @@ import { SESSION_COOKIE_NAME } from "@/lib/config/constants";
 import AppError from "../utils/error";
 
 
-const me: ServiceSignature<{}, SECs.Auth.Me, true
+const me: ServiceSignature<object, SECs.Auth.Me, true
 > = async (session, _) => {
     const user = await userRepository.findById(new Types.ObjectId(session.userId));
 
@@ -78,7 +78,7 @@ const signIn: ServiceSignature<
 };
 
 const signOut: ServiceSignature<
-    {},
+    object,
     SECs.Auth.SignOut,
     true
 > = async (_, __) => {
@@ -112,7 +112,7 @@ const signUpRequest: ServiceSignature<
     const passwordHash = await hashString(data.password);
     const otpHash = await hashString(otp);
 
-    let signUpRequestDoc = {
+    const signUpRequestDoc = {
         name: data.name,
         email: data.email,
         passwordHash,
@@ -120,7 +120,7 @@ const signUpRequest: ServiceSignature<
         expiresAt: new Date(Date.now() + 600 * 1000)
     };
 
-    let prevAttempt = await signUpRequestRepository.findByEmail(data.email);
+    const prevAttempt = await signUpRequestRepository.findByEmail(data.email);
     if (prevAttempt) {
         await signUpRequestRepository.updateById(
             prevAttempt._id,
