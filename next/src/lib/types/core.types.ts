@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { ZodSchema } from "zod";
 import { Types } from "mongoose";
-import { EUserRole, ESECs, SuccessResponseCodesEnum, ISetCookie } from "./index.types";
+import { EUserRole, ESECs, SuccessResponseCodesEnum, ISetCookie, SECs } from "./index.types";
 
 export enum ELogLevel {
     FATAL = 0,
@@ -24,57 +24,58 @@ export interface IEmail {
     html: string;
 }
 
-type GenericServiceOptions<T, SECs extends ESECs, RequireAuth extends boolean> = {
-    service: RequireAuth extends true
-    ? (session: ISession, data: T) => Promise<IServiceResolve<SECs, any>>
-    : (data: T) => Promise<IServiceResolve<SECs, any>>;
-    successCode?: SuccessResponseCodesEnum;
-    onSuccess?: (sDOut: any) => {
-        responseData: any;
-        cookies?: ISetCookie[];
-    };
-};
+export type ControllerSignature<IbD> = (
+    req: NextRequest,
+    parsedData: IbD,
+    session: ISession | null,
+) => Promise<NextResponse>;
 
-
-export type ControllerContext<T, RequireAuth extends boolean> = {
-    req: NextRequest;
-    data: T;
-} & (RequireAuth extends true ? { session: ISession } : { session: null });
-
-export type HandlerOptions<T, RequireAuth extends boolean = false> = {
-    validate?: ZodSchema<T>;
-    requireAuth?: RequireAuth;
-} & (
-        | {
-            controller: (ctx: ControllerContext<T, RequireAuth>) => Promise<NextResponse>;
-            serviceOptions?: never;
-        }
-        | {
-            controller?: never;
-            serviceOptions: GenericServiceOptions<
-                T,
-                any,
-                RequireAuth
-            >;
-        }
-    );
-
-export type IServiceResolve<C extends ESECs, T> =
+export type IServiceResolve<SDOut> =
     | {
         success: true,
-        data: T
+        data: SDOut
     }
     | {
-        success: false,
-        errorCode: C;
+        success: false;
+        errorCode: ESECs;
         errorMessage?: string;
     }
 
 export type ServiceSignature<
     SDIn,
-    SECs extends ESECs,
-    RequireSession extends boolean = false
-> = RequireSession extends true
-    ? (session: ISession, data: SDIn) => Promise<IServiceResolve<SECs, any>>
-    : (data: SDIn) => Promise<IServiceResolve<SECs, any>>;
+    SDOut,
+    RequireSession extends boolean = false,
+> = (data: SDIn, session: RequireSession extends true ? ISession : null)
+        => Promise<IServiceResolve<SDOut>>;
 
+export type ControllerConfig<IbD> = {
+    controller: ControllerSignature<IbD>;
+    service?: never;
+    successCode?: never;
+    onSuccess?: never;
+}
+
+export type ServiceConfig<SDIn, SDOut, ObD, RequireAuth extends boolean> = {
+    service: ServiceSignature<SDIn, SDOut, RequireAuth>;
+    successCode?: SuccessResponseCodesEnum;
+    onSuccess?: (sDOut: SDOut) => {
+        responseData: ObD;
+        cookies?: ISetCookie[];
+    };
+    controller?: never;
+};
+
+export type HandlerConfig<
+    IbD,
+    SDIn,
+    SDOut,
+    ObD,
+    RequireAuth extends boolean = false
+> = {
+    requireAuth: RequireAuth;
+    dataUnifier?: (req: NextRequest, parsedBody: object) => unknown;
+    validationSchema: ZodSchema<IbD>;
+    options:
+    | ControllerConfig<IbD>
+    | ServiceConfig<SDIn, SDOut, ObD, RequireAuth>;
+}

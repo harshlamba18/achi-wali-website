@@ -6,7 +6,7 @@ type GetEnvVariable = {
     (envVarName: string, fatalIfNotFound: false): string | undefined;
 };
 
-const getEnvVariable: GetEnvVariable = (envVarName, fatalIfNotFound): any => {
+const getEnvVariable: GetEnvVariable = ((envVarName, fatalIfNotFound) => {
     envVarName = "BACKEND_" + envVarName.trim().toUpperCase();
 
     const envVarValue = process.env[envVarName];
@@ -19,7 +19,7 @@ const getEnvVariable: GetEnvVariable = (envVarName, fatalIfNotFound): any => {
     }
 
     return envVarValue;
-};
+}) as GetEnvVariable;
 
 
 export default getEnvVariable;

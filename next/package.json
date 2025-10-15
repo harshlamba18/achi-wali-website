@@ -24,7 +24,8 @@
     "remark": "^15.0.1",
     "remark-html": "^16.0.1",
     "shiki": "^3.13.0",
-    "styled-components": "^6.1.19"
+    "styled-components": "^6.1.19",
+    "zod": "^4.1.12"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
@@ -44,7 +45,6 @@
     "nodemailer": "^7.0.9",
     "otp-generator": "^4.0.1",
     "tailwindcss": "^4",
-    "typescript": "^5",
-    "zod": "^4.1.12"
+    "typescript": "^5"
   }
 }

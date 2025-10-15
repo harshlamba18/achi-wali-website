@@ -1,17 +1,15 @@
-import createHandler from '@/lib/handler';
+import createServiceOnlyHandler from '@/lib/handler';
 import authValidator from '@/lib/validators/auth.validator';
 import authService from '@/lib/services/auth.service';
-import { SuccessResponseCodesEnum } from '@/lib/types/index.types';
 import { cookieOptions } from '@/lib/utils/cookie';
 import { SESSION_COOKIE_NAME } from '@/lib/config/constants';
 
-const POST = createHandler({
-    validate: authValidator.signOut,
+const POST = createServiceOnlyHandler({
+    validationSchema: authValidator.signOut,
     requireAuth: true,
-    serviceOptions: {
+    options: {
         service: authService.signOut,
-        successCode: SuccessResponseCodesEnum.OK,
-        onSuccess: (sDOut: any) => {
+        onSuccess: (sDOut) => {
             return {
                 responseData: {},
                 cookies: [{

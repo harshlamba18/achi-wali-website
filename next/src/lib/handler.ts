@@ -5,178 +5,172 @@ import {
     ESECs,
     FailedResponseCodeEnum,
     FailureResponseCodesEnum,
-    ControllerContext,
-    HandlerOptions,
+    HandlerConfig,
     IServiceResolve,
+    ServiceConfig,
+    ControllerConfig,
     ISession,
     SuccessResponseCodesEnum,
+    ServiceSignature,
 } from '@/lib/types/index.types';
 import log, { ELogLevel } from './utils/logger';
 import { NextRequest, NextResponse } from 'next/server';
 import AppError from './utils/error';
 import { safeJSONStringify } from './utils/serialize';
 
+/*
+function createHandler<
+    IbD extends object,
+    SDIn extends object,
+    SDOut extends object,
+    ObD extends object
+>(
+    handlerConfig: HandlerConfig<IbD, SDIn, SDOut, ObD, true> & { config: ServiceConfig<SDIn, SDOut, ObD, true> }
+): (req: NextRequest) => Promise<NextResponse>;
 
-const createHandler = <T = unknown, RequireAuth extends boolean = false>({
-    validate,
-    requireAuth = false as RequireAuth,
-    controller,
-    serviceOptions,
-}: HandlerOptions<T, RequireAuth>) => {
+function createHandler<
+    IbD extends object,
+    SDIn extends object,
+    SDOut extends object,
+    ObD extends object
+>(
+    handlerConfig: HandlerConfig<IbD, SDIn, SDOut, ObD, false> & { config: ServiceConfig<SDIn, SDOut, ObD, false> }
+): (req: NextRequest) => Promise<NextResponse>;
+
+function createHandler<
+    IbD extends object
+>(
+    handlerConfig: HandlerConfig<IbD, IbD, IbD, IbD, true> & { config: ControllerConfig<IbD, true> }
+): (req: NextRequest) => Promise<NextResponse>;
+
+function createHandler<
+    IbD extends object
+>(
+    handlerConfig: HandlerConfig<IbD, IbD, IbD, IbD, false> & { config: ControllerConfig<IbD, false> }
+): (req: NextRequest) => Promise<NextResponse>;
+*/
+
+function createHandler<
+    IbD extends object,
+    SDIn extends object,
+    SDOut extends object,
+    ObD extends object,
+    RequireAuth extends boolean
+>(
+    {
+        requireAuth,
+        dataUnifier,
+        validationSchema,
+        options: config,
+    }: HandlerConfig<IbD, SDIn, SDOut, ObD, RequireAuth>
+) {
     return async (req: NextRequest): Promise<NextResponse> => {
-        let body: any = {};
-        let data: any = {};
-        let session: RequireAuth extends true ? ISession : null = null as any;
+        let session: ISession | null = null;
+        let data: IbD;
         const responseHandler = new ResponseHandler();
 
-        const defaultOnSuccess = (sDOut: any) => ({
-            responseData: sDOut,
-            cookies: undefined,
-        });
+        const defaultDataUnifier = (req: NextRequest, parsedBody: object): IbD => {
+            return parsedBody as IbD;
+        }
+        const defaultOnSuccess = (sData: SDOut) => {
+            return {
+                responseData: sData,
+                cookies: []
+            };
+        }
 
         try {
             if (requireAuth) {
-                session = (await authService.extractSession(req)) as any;
-
+                session = await authService.extractSession(req);
                 if (!session) {
-                    return new ResponseHandler().sendFailed(
-                        FailedResponseCodeEnum.UNAUTHORIZED
-                    );
-                }
-            } else {
-                session = null as any;
-            }
-
-            if (["POST", "PUT", "PATCH", "DELETE"].includes(req.method || "")) {
-                const rawBody = await req.text();
-                if (!rawBody) {
                     return responseHandler.sendFailed(
-                        FailedResponseCodeEnum.BAD_REQUEST,
-                        "Request body is missing."
-                    );
-                }
-
-                try {
-                    body = JSON.parse(rawBody);
-                } catch (err) {
-                    return responseHandler.sendFailed(
-                        FailedResponseCodeEnum.BAD_REQUEST,
-                        "Invalid JSON format."
+                        FailedResponseCodeEnum.UNAUTHORIZED,
+                        "Authentication required."
                     );
                 }
             }
 
-            if (validate) {
-                const result = await validator(body, validate);
+            const parsedBody = await parseRequestBodyMiddleware(req);
+            if (parsedBody instanceof NextResponse) return parsedBody;
 
-                if (!result.success) {
-                    return responseHandler.sendFailed(
-                        FailedResponseCodeEnum.BAD_REQUEST,
-                        result.error
-                    );
-                }
+            const rawData = (dataUnifier ?? defaultDataUnifier)(req, parsedBody);
 
-                data = result.data;
+            const validationResult = await validator(rawData, validationSchema);
+            if (!validationResult.success) {
+                return responseHandler.sendFailed(
+                    FailedResponseCodeEnum.BAD_REQUEST,
+                    validationResult.error
+                );
             }
 
-            const controllerContext: ControllerContext<T, RequireAuth>
-                = { req, data, session } as ControllerContext<T, RequireAuth>;
+            data = validationResult.data;
 
-            if (controller) {
-                return await controller(controllerContext);
+            if (config.controller) {
+                return await config.controller(req, data, session);
             }
-            else if (serviceOptions) {
-                const service: any = serviceOptions.service;
-                let serviceResponse: IServiceResolve<any, any>;
+            else {
+                let serviceResponse: IServiceResolve<SDOut>;
 
                 if (requireAuth) {
-                    serviceResponse = await service(session, data);
+                    const service = config.service as ServiceSignature<SDIn, SDOut, true>;
+                    serviceResponse = await service(data as unknown as SDIn, session as ISession);
                 }
                 else {
-                    serviceResponse = await service(data);
+                    const service = config.service as ServiceSignature<SDIn, SDOut, false>;
+                    serviceResponse = await service(data as unknown as SDIn, null);
                 }
 
                 if (!serviceResponse.success) {
-                    return DefaultServiceErrorCodeHandler(
+                    return serviceErrorCodeHandler(
                         responseHandler,
                         serviceResponse.errorCode,
                         serviceResponse.errorMessage
                     );
                 }
 
-                const { responseData, cookies } =
-                    (serviceOptions.onSuccess ?? defaultOnSuccess)(
-                        serviceResponse.data
-                    );
-
-                // log(ELogLevel.DEBUG, "final output", {
-                //     serviceResponseData: serviceResponse.data,
-                //     responseData,
-                //     cookies,
-                // });
+                const { responseData, cookies } = (config.onSuccess ?? defaultOnSuccess)(
+                    serviceResponse.data
+                );
 
                 if (cookies) {
-                    cookies.forEach((cookie) =>
-                        responseHandler.setCookie(
-                            cookie.name,
-                            cookie.value,
-                            cookie.options
-                        )
-                    );
+                    cookies.forEach((cookie) => responseHandler.setCookie(cookie.name, cookie.value, cookie.options));
                 }
 
                 return responseHandler.sendSuccess(
-                    serviceOptions.successCode ?? SuccessResponseCodesEnum.OK,
+                    config.successCode ?? SuccessResponseCodesEnum.OK,
                     responseData
                 );
             }
-            else {
-                throw new AppError("Handler misconfiguration.", {});
-            }
-
         } catch (error) {
-            if (error instanceof AppError) {
-                log(ELogLevel.ERROR, 'AppError: While resolving API response.', {
-                    url: req.url,
-                    body: req.body,
-                    error: {
-                        name: error.name,
-                        message: error.message,
-                        peek: safeJSONStringify(error.peek),
-                        cause: error.cause,
-                        stack: error.stack,
-                    }
-                });
-            }
-            else if (error instanceof Error) {
-                log(ELogLevel.ERROR, 'GenericError: While resolving API response.', {
-                    url: req.url,
-                    body: req.body,
-                    error: {
-                        name: error.name,
-                        message: error.message,
-                        cause: error.cause,
-                        stack: error.stack,
-                    }
-                });
-            }
-            else {
-                log(ELogLevel.ERROR, 'AppError: While resolving API response.', {
-                    url: req.url,
-                    body: req.body,
-                    error: safeJSONStringify(error),
-                });
-            }
-
-            return responseHandler.sendFailure(
-                FailureResponseCodesEnum.INTERNAL_SERVER_ERROR
-            );
+            return errorHandler(req, error);
         }
     };
-};
+}
 
+const parseRequestBodyMiddleware = async (req: NextRequest): Promise<object | NextResponse> => {
+    if (["POST", "PUT", "PATCH", "DELETE"].includes(req.method)) {
+        const rawBody = await req.text();
+        if (!rawBody) {
+            return new ResponseHandler().sendFailed(
+                FailedResponseCodeEnum.BAD_REQUEST,
+                "Request body is missing."
+            );
+        }
 
-const DefaultServiceErrorCodeHandler = (
+        try {
+            return JSON.parse(rawBody);
+        } catch (_error) {
+            return new ResponseHandler().sendFailed(
+                FailedResponseCodeEnum.BAD_REQUEST,
+                "Invalid JSON format."
+            );
+        }
+    }
+
+    return {};
+}
+
+const serviceErrorCodeHandler = (
     responseHandler: ResponseHandler,
     errorCode: ESECs,
     errorMessage?: string,
@@ -205,5 +199,44 @@ const DefaultServiceErrorCodeHandler = (
             throw new AppError("Unhandled service client error code.", { errorCode });
     }
 };
+
+const errorHandler = (req: NextRequest, error: unknown): NextResponse => {
+    if (error instanceof AppError) {
+        log(ELogLevel.ERROR, 'AppError: While resolving API response.', {
+            url: req.url,
+            body: req.body,
+            error: {
+                name: error.name,
+                message: error.message,
+                peek: safeJSONStringify((error as AppError).peek),
+                cause: error.cause,
+                stack: error.stack,
+            }
+        });
+    }
+    else if (error instanceof Error) {
+        log(ELogLevel.ERROR, 'GenericError: While resolving API response.', {
+            url: req.url,
+            body: req.body,
+            error: {
+                name: error.name,
+                message: error.message,
+                cause: error.cause,
+                stack: error.stack,
+            }
+        });
+    }
+    else {
+        log(ELogLevel.ERROR, 'AppError: While resolving API response.', {
+            url: req.url,
+            body: req.body,
+            error: safeJSONStringify(error),
+        });
+    }
+
+    return new ResponseHandler().sendFailure(
+        FailureResponseCodesEnum.INTERNAL_SERVER_ERROR
+    );
+}
 
 export default createHandler;

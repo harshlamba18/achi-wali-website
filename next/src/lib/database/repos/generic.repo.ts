@@ -4,6 +4,8 @@ import connectToDatabase from '@/lib/database/db';
 
 
 class GenericRepository<FullT, CreateT, UpdateT> {
+    // TODO: Fix this linting issue.
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     constructor(protected readonly model: Model<any>) { }
 
     protected async ensureDbConnection() {

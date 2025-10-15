@@ -1,5 +1,5 @@
 import { Types } from "mongoose";
-import { boolean, z, ZodObject, ZodSchema } from "zod";
+import { z, ZodSchema } from "zod";
 import { EUserRole } from "../types/domain.types";
 
 type ValidatedRequest<T> = {
@@ -10,15 +10,11 @@ type ValidatedRequest<T> = {
     error: string[]
 };
 
-const validator = async <T>(
-    incomingData: any,
-    schema: ZodSchema<any>
-): Promise<ValidatedRequest<T>> => {
+const validator = async <IbD>(
+    incomingData: unknown,
+    schema: ZodSchema<IbD>
+): Promise<ValidatedRequest<IbD>> => {
     try {
-        if (schema instanceof ZodObject) {
-            schema = schema.strip();
-        }
-
         const result = schema.safeParse(incomingData);
 
         if (!result.success) {
@@ -35,7 +31,7 @@ const validator = async <T>(
             success: true,
             data: result.data,
         };
-    } catch (e) {
+    } catch (_) {
         return {
             success: false,
             error: ["Invalid JSON."]
@@ -43,19 +39,18 @@ const validator = async <T>(
     }
 }
 
-namespace __internal__ {
-    export const isValidObjectId = (id: string): boolean => {
-        return (
-            typeof id === 'string' &&
-            /^[a-fA-F0-9]{24}$/.test(id) &&
-            Types.ObjectId.isValid(id)
-        );
-    };
-}
+const _isValidObjectId = (id: string): boolean => {
+    return (
+        typeof id === 'string' &&
+        /^[a-fA-F0-9]{24}$/.test(id) &&
+        Types.ObjectId.isValid(id)
+    );
+};
+
 
 const allIbDField = {
     _id: z.string()
-        .refine((val) => __internal__.isValidObjectId(val), {
+        .refine((val) => _isValidObjectId(val), {
             message: "Invalid MongoDB ObjectId",
         })
         .transform((val) => new Types.ObjectId(val)),

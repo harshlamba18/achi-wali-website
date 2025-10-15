@@ -5,14 +5,16 @@ import {
     ESECs,
     ServiceSignature,
     EUserRole,
+    SDOut,
+    SDIn,
 } from "@/lib/types/index.types";
-import { Types } from "mongoose";
 import { withSession } from "../database/db";
 
 
-const get: ServiceSignature<{
-    _id: Types.ObjectId
-}, SECs.Team.Get, false
+const get: ServiceSignature<
+    SDIn.Team.Get,
+    SDOut.Team.Get,
+    false
 > = async (data) => {
     const team = await teamRepository.findById(data._id);
     if (!team) {
@@ -26,15 +28,22 @@ const get: ServiceSignature<{
     return {
         success: true,
         data: {
-            ...team,
             _id: team._id.toHexString(),
-            members: team.members.forEach(_id => _id.toHexString())
+            name: team.name,
+            description: team.description,
+            members: team.members.map(_id => _id.toHexString()),
+            coverImageMediaKey: team.coverImageMediaKey,
+            createdAt: team.createdAt,
+            updatedAt: team.updatedAt,
         }
     };
 };
 
-const getAll: ServiceSignature<{}, SECs.Team.GetAll, false
-> = async (_) => {
+const getAll: ServiceSignature<
+    SDIn.Team.GetAll,
+    SDOut.Team.GetAll,
+    false
+> = async () => {
     const teams = await teamRepository.findAll({});
 
     return {
@@ -50,11 +59,11 @@ const getAll: ServiceSignature<{}, SECs.Team.GetAll, false
     };
 };
 
-const create: ServiceSignature<{
-    name: string,
-    description: string,
-}, SECs.Team.Create, true
-> = async (session, data) => {
+const create: ServiceSignature<
+    SDIn.Team.Create,
+    SDOut.Team.Create,
+    true
+> = async (data, session) => {
     if (!session.userRoles.includes(EUserRole.ADMIN)) {
         return {
             success: false,
@@ -64,7 +73,7 @@ const create: ServiceSignature<{
     }
 
     const existingTeam = await teamRepository.findOne({
-        name
+        name: data.name
     });
 
     if (existingTeam) {
@@ -87,11 +96,11 @@ const create: ServiceSignature<{
 };
 
 
-const addMembers: ServiceSignature<{
-    _id: Types.ObjectId,
-    memberIds: Types.ObjectId[],
-}, SECs.Team.AddMembers, true
-> = async (session, data) => {
+const addMembers: ServiceSignature<
+    SDIn.Team.AddMembers,
+    SDOut.Team.AddMembers,
+    true
+> = async (data, session) => {
     if (!session.userRoles.includes(EUserRole.ADMIN)) {
         return {
             success: false,
@@ -143,13 +152,11 @@ const addMembers: ServiceSignature<{
     };
 };
 
-const update: ServiceSignature<{
-    _id: Types.ObjectId,
-    name?: string,
-    description?: string,
-    coverImageMediaKey?: string,
-}, SECs.Team.Update, true
-> = async (session, data) => {
+const update: ServiceSignature<
+    SDIn.Team.Update,
+    SDOut.Team.Update,
+    true
+> = async (data, session) => {
     if (!session.userRoles.includes(EUserRole.ADMIN)) {
         return {
             success: false,
@@ -179,10 +186,11 @@ const update: ServiceSignature<{
     };
 };
 
-const remove: ServiceSignature<{
-    _id: Types.ObjectId
-}, SECs.Team.Remove, true
-> = async (session, data) => {
+const remove: ServiceSignature<
+    SDIn.Team.Remove,
+    SDOut.Team.Remove,
+    true
+> = async (data, session) => {
     if (!session.userRoles.includes(EUserRole.ADMIN)) {
         return {
             success: false,
@@ -233,4 +241,3 @@ const teamServices = {
 
 
 export default teamServices;
-
