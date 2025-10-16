@@ -4,7 +4,7 @@ import userService from '@/lib/services/user.service';
 
 const GET = createServiceOnlyHandler({
     validationSchema: userValidator.get,
-    dataUnifier: (req, parsedBody) => {
+    dataUnifier: (req) => {
         const { searchParams } = new URL(req.url);
         const _id = searchParams.get('_id');
         const target = searchParams.get('target');

@@ -1,7 +1,3 @@
-// Maybe ESLint doesn't like namespaces, but I can't think of any other way.
-// Using namespaces for SECs and others is a good enough method in my view.
-// It's just to organize the types and nothing else.
-
 /* eslint-disable @typescript-eslint/no-namespace */
 
 import { Types } from "mongoose";
@@ -198,8 +194,8 @@ export namespace SDOut {
     }
 
     export namespace User {
-        // TODO: Fix this temporary solution.
-        export type Get = {};
+        // Get encompasses GetRestricted, GetUnrestricted, and GetAll.
+        export type Get = object;
 
         export type GetRestricted = {
             _id: string;
@@ -318,3 +314,5 @@ export namespace SECs {
     }
 
 }
+
+/* eslint-enable @typescript-eslint/no-namespace */

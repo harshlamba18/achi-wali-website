@@ -7,8 +7,6 @@ import {
     FailureResponseCodesEnum,
     HandlerConfig,
     IServiceResolve,
-    ServiceConfig,
-    ControllerConfig,
     ISession,
     SuccessResponseCodesEnum,
     ServiceSignature,
@@ -18,37 +16,6 @@ import { NextRequest, NextResponse } from 'next/server';
 import AppError from './utils/error';
 import { safeJSONStringify } from './utils/serialize';
 
-/*
-function createHandler<
-    IbD extends object,
-    SDIn extends object,
-    SDOut extends object,
-    ObD extends object
->(
-    handlerConfig: HandlerConfig<IbD, SDIn, SDOut, ObD, true> & { config: ServiceConfig<SDIn, SDOut, ObD, true> }
-): (req: NextRequest) => Promise<NextResponse>;
-
-function createHandler<
-    IbD extends object,
-    SDIn extends object,
-    SDOut extends object,
-    ObD extends object
->(
-    handlerConfig: HandlerConfig<IbD, SDIn, SDOut, ObD, false> & { config: ServiceConfig<SDIn, SDOut, ObD, false> }
-): (req: NextRequest) => Promise<NextResponse>;
-
-function createHandler<
-    IbD extends object
->(
-    handlerConfig: HandlerConfig<IbD, IbD, IbD, IbD, true> & { config: ControllerConfig<IbD, true> }
-): (req: NextRequest) => Promise<NextResponse>;
-
-function createHandler<
-    IbD extends object
->(
-    handlerConfig: HandlerConfig<IbD, IbD, IbD, IbD, false> & { config: ControllerConfig<IbD, false> }
-): (req: NextRequest) => Promise<NextResponse>;
-*/
 
 function createHandler<
     IbD extends object,
@@ -69,7 +36,7 @@ function createHandler<
         let data: IbD;
         const responseHandler = new ResponseHandler();
 
-        const defaultDataUnifier = (req: NextRequest, parsedBody: object): IbD => {
+        const defaultDataUnifier = (_req: NextRequest, parsedBody: object): IbD => {
             return parsedBody as IbD;
         }
         const defaultOnSuccess = (sData: SDOut) => {

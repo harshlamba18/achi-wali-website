@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { ZodSchema } from "zod";
 import { Types } from "mongoose";
-import { EUserRole, ESECs, SuccessResponseCodesEnum, ISetCookie, SECs } from "./index.types";
+import { EUserRole, ESECs, SuccessResponseCodesEnum, ISetCookie } from "./index.types";
 
 export enum ELogLevel {
     FATAL = 0,

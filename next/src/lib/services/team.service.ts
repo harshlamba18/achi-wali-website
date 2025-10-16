@@ -1,7 +1,6 @@
 import teamRepository from "@/lib/database/repos/team.repo";
 import userRepository from "@/lib/database/repos/user.repo";
 import {
-    SECs,
     ESECs,
     ServiceSignature,
     EUserRole,

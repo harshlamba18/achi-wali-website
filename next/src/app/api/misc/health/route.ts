@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import connectToDatabase from '@/lib/database/db';
 import { verifySMTPConnection } from '@/lib/utils/email';
 
-const GET = async (req: NextRequest) => {
+const GET = async (_: NextRequest) => {
     let dbConnected = false;
     let smtpConnected = false;
 

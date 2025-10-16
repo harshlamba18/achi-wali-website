@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-namespace */
+
 import { EmptyObject, EUserRole } from "./index.types";
 
 export namespace IbD {
@@ -97,4 +99,4 @@ export namespace IbD {
     }
 }
 
-
+/* eslint-enable @typescript-eslint/no-namespace */

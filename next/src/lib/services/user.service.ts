@@ -1,7 +1,6 @@
 import userRepository from "@/lib/database/repos/user.repo";
 import teamRepository from "@/lib/database/repos/team.repo";
 import {
-    SECs,
     ESECs,
     ServiceSignature,
     EUserRole,
@@ -120,7 +119,7 @@ const getAll: ServiceSignature<
     SDIn.User.GetAll,
     SDOut.User.GetAll,
     true
-> = async (__) => {
+> = async (_) => {
     const users = await userRepository.findAll({});
 
     return {

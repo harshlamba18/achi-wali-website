@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-namespace */
+
 export namespace APIControl {
     export namespace Auth {
         export enum SignUp {
@@ -22,3 +24,5 @@ export namespace APIControl {
         }
     }
 }
+
+/* eslint-enable @typescript-eslint/no-namespace */
