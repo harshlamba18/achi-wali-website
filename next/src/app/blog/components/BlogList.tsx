@@ -6,20 +6,15 @@ import {
   Search,
   Calendar,
   Clock,
-  User,
   Eye,
   Heart,
   MessageCircle,
   ArrowRight,
 } from "lucide-react";
 import Link from "next/link";
-import { Righteous, Roboto } from "next/font/google";
+import { Righteous } from "next/font/google";
 
 const righteousFont = Righteous({ weight: "400", subsets: ["latin"] });
-const robotoFont = Roboto({
-  weight: ["300", "400", "500", "700"],
-  subsets: ["latin"],
-});
 
 interface BlogPost {
   slug: string;

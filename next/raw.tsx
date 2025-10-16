@@ -8,14 +8,8 @@ import {
   ExternalLink,
   Github,
   Zap,
-  Code,
-  Database,
-  Smartphone,
-  Globe,
-  Cpu,
   Gamepad,
   Gamepad2,
-  GamepadIcon,
 } from "lucide-react";
 
 import Game_LateFees from "./assets/games/late_fees.png";

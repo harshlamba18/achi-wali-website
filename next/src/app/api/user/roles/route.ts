@@ -1,11 +1,11 @@
-import createHandler from '@/lib/handler';
+import createServiceOnlyHandler from '@/lib/handler';
 import userValidator from '@/lib/validators/user.validator';
 import userService from '@/lib/services/user.service';
 
-const PATCH = createHandler({
-    validate: userValidator.updateRoles,
+const PATCH = createServiceOnlyHandler({
+    validationSchema: userValidator.updateRoles,
     requireAuth: true,
-    serviceOptions: {
+    options: {
         service: userService.updateRoles,
     }
 });

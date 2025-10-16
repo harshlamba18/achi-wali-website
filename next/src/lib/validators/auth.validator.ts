@@ -1,5 +1,6 @@
 import { z } from "zod"
 import { allIbDField } from "./core.validator";
+import { APIControl } from "../types/api.types";
 
 const authValidator = {
     me: z.object({}),
@@ -8,17 +9,26 @@ const authValidator = {
         password: allIbDField.password,
     }),
     signOut: z.object({}),
-    signUpRequest: z.object({
-        name: allIbDField.shortString,
+    signUp: z.object({
+        target: z.enum(APIControl.Auth.SignUp),
+        name: z.string().optional(),
         email: allIbDField.email,
-        password: allIbDField.password,
-    }),
-    signUpRequestResendOTP: z.object({
-        email: allIbDField.email,
-    }),
-    signUpVerify: z.object({
-        email: allIbDField.email,
-        otp: allIbDField.otp,
+        password: allIbDField.password.optional(),
+        otp: allIbDField.otp.optional(),
+    }).refine((data) => {
+        if (data.target === APIControl.Auth.SignUp.REQUEST && !data.name) {
+            return false;
+        }
+        if (data.target === APIControl.Auth.SignUp.RESEND_OTP && !data.otp) {
+            return false;
+        }
+        if (data.target === APIControl.Auth.SignUp.VERIFY && !data.otp) {
+            return false;
+        }
+        return true;
+    }, {
+        message: "Missing required fields based on action type",
+        path: ['name', 'otp']
     }),
     changePassword: z.object({
         password: allIbDField.password,

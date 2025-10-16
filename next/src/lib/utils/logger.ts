@@ -11,7 +11,7 @@ const currentLogLevel = (() => {
     return ELogLevel.INFO;
 })();
 
-const log = (logLevel: ELogLevel, message: string, peek: any = null) => {
+const log = (logLevel: ELogLevel, message: string, peek: unknown = null) => {
     if (logLevel > currentLogLevel) return;
 
     const timestamp = new Date().toISOString();

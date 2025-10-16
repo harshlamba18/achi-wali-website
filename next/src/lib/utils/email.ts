@@ -40,10 +40,10 @@ const sendEmail = async (data: IEmail): Promise<true> => {
 const verifySMTPConnection = async (): Promise<boolean> => {
     try {
         await transporter.verify();
-
-        log(ELogLevel.INFO, "SMTP: SMTP connection verified.");
     } catch (error) {
-        log(ELogLevel.FATAL, "SMTP: Couldn't connect to SMTP server.");
+        log(ELogLevel.FATAL, "SMTP: Couldn't connect to SMTP server.", {
+            error
+        });
         return false;
     }
 

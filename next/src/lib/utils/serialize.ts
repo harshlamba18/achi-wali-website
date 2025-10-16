@@ -1,4 +1,4 @@
-const safeJSONStringify = (obj: any): string => {
+const safeJSONStringify = (obj: unknown): string => {
     try {
         return JSON.stringify(obj, null, 4);
     } catch {

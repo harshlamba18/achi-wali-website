@@ -1,4 +1,4 @@
-import { SignJWT, jwtVerify, JWTVerifyResult, errors as joseErrors } from "jose";
+import { SignJWT, jwtVerify, errors as joseErrors } from "jose";
 import { getJWTSecretKey } from "@/lib/utils/secret";
 import AppError from "@/lib/utils/error";
 import { JWTPayload } from "@/lib/types/index.types";

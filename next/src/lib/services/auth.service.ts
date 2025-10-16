@@ -7,17 +7,22 @@ import { generateOTP } from "@/lib/services/core/otp.core.service";
 import { sendOTPEmail } from "@/lib/services/core/email.core.service";
 import {
     ISession,
-    SECs,
     ESECs,
     ServiceSignature,
     EUserRole,
+    SDOut,
+    SDIn,
+    APIControl,
 } from "@/lib/types/index.types";
 import { SESSION_COOKIE_NAME } from "@/lib/config/constants";
 import AppError from "../utils/error";
 
 
-const me: ServiceSignature<{}, SECs.Auth.Me, true
-> = async (session, _) => {
+const me: ServiceSignature<
+    SDIn.Auth.Me,
+    SDOut.Auth.Me,
+    true
+> = async ({ }, session) => {
     const user = await userRepository.findById(new Types.ObjectId(session.userId));
 
     if (!user) {
@@ -36,11 +41,9 @@ const me: ServiceSignature<{}, SECs.Auth.Me, true
 };
 
 const signIn: ServiceSignature<
-    {
-        email: string,
-        password: string,
-    },
-    SECs.Auth.SignIn
+    SDIn.Auth.SignIn,
+    SDOut.Auth.SignIn,
+    false
 > = async (data) => {
     const user = await userRepository.findByEmail(data.email);
 
@@ -78,10 +81,10 @@ const signIn: ServiceSignature<
 };
 
 const signOut: ServiceSignature<
-    {},
-    SECs.Auth.SignOut,
+    SDIn.Auth.SignOut,
+    SDOut.Auth.SignOut,
     true
-> = async (_, __) => {
+> = async ({ }, { }) => {
     return {
         success: true,
         data: {
@@ -90,13 +93,33 @@ const signOut: ServiceSignature<
     };
 };
 
+const signUp: ServiceSignature<
+    SDIn.Auth.SignUp,
+    SDOut.Auth.SignUp,
+    false
+> = async (data) => {
+    if (data.target === APIControl.Auth.SignUp.REQUEST) {
+        return signUpRequest(data, null);
+    }
+
+    if (data.target === APIControl.Auth.SignUp.RESEND_OTP) {
+        return signUpRequestResendOTP(data, null);
+    }
+
+    if (data.target === APIControl.Auth.SignUp.VERIFY) {
+        return signUpVerify(data, null);
+    }
+
+    throw new AppError(
+        "APIControl.Auth.SignUp is something other than REQUEST, RESEND_OTP, and VERIFY",
+        { data }
+    );
+}
+
 const signUpRequest: ServiceSignature<
-    {
-        name: string,
-        email: string,
-        password: string,
-    },
-    SECs.Auth.SignUpRequest
+    SDIn.Auth.SignUpRequest,
+    SDOut.Auth.SignUpRequest,
+    false
 > = async (data) => {
     const user = await userRepository.findByEmail(data.email);
     if (user) {
@@ -112,7 +135,7 @@ const signUpRequest: ServiceSignature<
     const passwordHash = await hashString(data.password);
     const otpHash = await hashString(otp);
 
-    let signUpRequestDoc = {
+    const signUpRequestDoc = {
         name: data.name,
         email: data.email,
         passwordHash,
@@ -120,7 +143,7 @@ const signUpRequest: ServiceSignature<
         expiresAt: new Date(Date.now() + 600 * 1000)
     };
 
-    let prevAttempt = await signUpRequestRepository.findByEmail(data.email);
+    const prevAttempt = await signUpRequestRepository.findByEmail(data.email);
     if (prevAttempt) {
         await signUpRequestRepository.updateById(
             prevAttempt._id,
@@ -140,10 +163,9 @@ const signUpRequest: ServiceSignature<
 }
 
 const signUpRequestResendOTP: ServiceSignature<
-    {
-        email: string,
-    },
-    SECs.Auth.SignUpRequestResendOTP
+    SDIn.Auth.SignUpRequestResendOTP,
+    SDOut.Auth.SignUpRequestResendOTP,
+    false
 > = async (data) => {
     const prevRequest = await signUpRequestRepository.findByEmail(data.email);
     if (!prevRequest) {
@@ -185,11 +207,9 @@ const signUpRequestResendOTP: ServiceSignature<
 };
 
 const signUpVerify: ServiceSignature<
-    {
-        email: string,
-        otp: string,
-    },
-    SECs.Auth.SignUpVerify
+    SDIn.Auth.SignUpVerify,
+    SDOut.Auth.SignUpVerify,
+    false
 > = async (data) => {
     const request = await signUpRequestRepository.findByEmail(data.email);
     if (!request) {
@@ -227,13 +247,10 @@ const signUpVerify: ServiceSignature<
 };
 
 const changePassword: ServiceSignature<
-    {
-        password: string,
-        newPassword: string,
-    },
-    SECs.Auth.ChangePassword,
+    SDIn.Auth.ChangePassword,
+    SDOut.Auth.ChangePassword,
     true
-> = async (session, data) => {
+> = async (data, session) => {
     const user = await userRepository.findById(session.userId);
     if (!user) {
         throw new AppError("Session exists, but user not found.", { session });
@@ -303,9 +320,7 @@ const authServices = {
     me,
     signIn,
     signOut,
-    signUpRequest,
-    signUpRequestResendOTP,
-    signUpVerify,
+    signUp,
     changePassword,
     extractSession,
 }

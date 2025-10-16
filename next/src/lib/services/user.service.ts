@@ -1,51 +1,74 @@
 import userRepository from "@/lib/database/repos/user.repo";
 import teamRepository from "@/lib/database/repos/team.repo";
 import {
-    ISession,
-    SECs,
     ESECs,
     ServiceSignature,
     EUserRole,
     IUser,
+    SDOut,
+    SDIn,
+    APIControl,
 } from "@/lib/types/index.types";
 import { Types } from "mongoose";
 import { withSession } from "../database/db";
+import AppError from "../utils/error";
 
 
-namespace __internal__ {
-    export const userExportLimitedInfo = (user: IUser) => {
-        return {
-            _id: user._id.toHexString(),
-            name: user.name,
-            email: user.email,
-            profileImgMediaKey: user.profileImgMediaKey,
-            roles: user.roles,
-            teamId: user.teamId?.toHexString() ?? null,
-            links: user.links,
-            createAt: user.createdAt,
-        }
-    }
-
-    export const userExportUnrestrictedInfo = (user: IUser) => {
-        return {
-            _id: user._id.toHexString(),
-            name: user.name,
-            email: user.email,
-            profileImgMediaKey: user.profileImgMediaKey,
-            phoneNumber: user.phoneNumber,
-            roles: user.roles,
-            teamId: user.teamId?.toHexString() ?? null,
-            links: user.links,
-            createdAt: user.createdAt,
-            updatedAt: user.updatedAt,
-        }
+const _userExportLimitedInfo = (user: IUser) => {
+    return {
+        _id: user._id.toHexString(),
+        name: user.name,
+        email: user.email,
+        profileImgMediaKey: user.profileImgMediaKey,
+        roles: user.roles,
+        teamId: user.teamId?.toHexString() ?? null,
+        links: user.links,
+        createdAt: user.createdAt,
     }
 }
 
+const _userExportUnrestrictedInfo = (user: IUser) => {
+    return {
+        _id: user._id.toHexString(),
+        name: user.name,
+        email: user.email,
+        profileImgMediaKey: user.profileImgMediaKey,
+        phoneNumber: user.phoneNumber,
+        roles: user.roles,
+        teamId: user.teamId?.toHexString() ?? null,
+        links: user.links,
+        createdAt: user.createdAt,
+        updatedAt: user.updatedAt,
+    }
+}
 
-const get: ServiceSignature<{
-    _id: Types.ObjectId,
-}, SECs.User.Get, false
+const get: ServiceSignature<
+    SDIn.User.Get,
+    SDOut.User.Get,
+    true
+> = async (data, session) => {
+    if (data.target === APIControl.User.Get.RESTRICTED) {
+        return getRestricted(data, session);
+    }
+
+    if (data.target === APIControl.User.Get.UNRESTRICTED) {
+        return getUnrestricted(data, session);
+    }
+
+    if (data.target === APIControl.User.Get.ALL) {
+        return getAll(data, session);
+    }
+
+    throw new AppError(
+        "APIControl.User.Get is something other than RESTRICTED, UNRESTRICTED, and ALL",
+        { data, session }
+    );
+}
+
+const getRestricted: ServiceSignature<
+    SDIn.User.GetRestricted,
+    SDOut.User.GetRestricted,
+    true
 > = async (data) => {
     const user = await userRepository.findById(new Types.ObjectId(data._id));
 
@@ -59,14 +82,15 @@ const get: ServiceSignature<{
 
     return {
         success: true,
-        data: __internal__.userExportLimitedInfo(user)
+        data: _userExportLimitedInfo(user)
     };
 };
 
-const getUnrestricted: ServiceSignature<{
-    _id: Types.ObjectId,
-}, SECs.User.Get, true
-> = async (session, data) => {
+const getUnrestricted: ServiceSignature<
+    SDIn.User.GetUnrestricted,
+    SDOut.User.GetUnrestricted,
+    true
+> = async (data, session) => {
     if (!session.userRoles.includes(EUserRole.ADMIN)) {
         return {
             success: false,
@@ -87,30 +111,37 @@ const getUnrestricted: ServiceSignature<{
 
     return {
         success: true,
-        data: __internal__.userExportUnrestrictedInfo(user)
+        data: _userExportUnrestrictedInfo(user)
     };
 };
 
-const getAll: ServiceSignature<{}, SECs.User.GetAll, false
+const getAll: ServiceSignature<
+    SDIn.User.GetAll,
+    SDOut.User.GetAll,
+    true
 > = async (_) => {
     const users = await userRepository.findAll({});
 
     return {
         success: true,
-        data: users.map(user => __internal__.userExportLimitedInfo(user)),
+        data: users.map(user => {
+            return {
+                _id: user._id.toHexString(),
+                name: user.name,
+                email: user.email,
+                profileImgMediaKey: user.profileImgMediaKey,
+                roles: user.roles,
+                teamId: user.teamId?.toHexString() ?? null,
+            }
+        }),
     };
 };
 
-const update: ServiceSignature<{
-    name?: string,
-    profileImgMediaKey?: string | null,
-    phoneNumber?: string,
-    links?: {
-        label: string,
-        url: string,
-    }[],
-}, SECs.User.Update, true
-> = async (session, data) => {
+const update: ServiceSignature<
+    SDIn.User.Update,
+    SDOut.User.Update,
+    true
+> = async (data, session) => {
     const user = await userRepository.findById(session.userId);
     if (!user) {
         return {
@@ -128,11 +159,11 @@ const update: ServiceSignature<{
     };
 };
 
-const updateRoles: ServiceSignature<{
-    _id: Types.ObjectId,
-    roles: EUserRole[],
-}, SECs.User.UpdateRoles, true
-> = async (session, data) => {
+const updateRoles: ServiceSignature<
+    SDIn.User.UpdateRoles,
+    SDOut.User.Update,
+    true
+> = async (data, session) => {
     if (!session.userRoles.includes(EUserRole.ADMIN)) {
         return {
             success: false,
@@ -160,10 +191,11 @@ const updateRoles: ServiceSignature<{
     };
 };
 
-const remove: ServiceSignature<{
-    _id: Types.ObjectId,
-}, SECs.User.Remove, true
-> = async (session, data) => {
+const remove: ServiceSignature<
+    SDIn.User.Remove,
+    SDOut.User.Remove,
+    true
+> = async (data, session) => {
     if (!session.userRoles.includes(EUserRole.ADMIN)) {
         return {
             success: false,
@@ -205,11 +237,10 @@ const remove: ServiceSignature<{
 
 const userService = {
     get,
-    getUnrestricted,
-    getAll,
     update,
     updateRoles,
     remove,
 };
 
 export default userService;
+

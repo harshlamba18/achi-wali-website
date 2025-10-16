@@ -27,7 +27,9 @@ const connectToDatabase = async (): Promise<typeof mongoose> => {
             return mongooseInstance;
         } catch (error) {
             global.mongooseCache.promise = null;
-            log(ELogLevel.FATAL, "MongoDB: Couldn't connected to database.")
+            log(ELogLevel.FATAL, "MongoDB: Couldn't connected to database.", {
+                error
+            });
             throw new AppError("Couldn't connected to database.");
         }
     }
