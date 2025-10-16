@@ -7,23 +7,7 @@ import {
   ChevronRight,
   ExternalLink,
   Github,
-  Zap,
-  Code,
-  Database,
-  Smartphone,
-  Globe,
-  Cpu,
-  Gamepad,
-  Gamepad2,
-  GamepadIcon,
 } from "lucide-react";
-
-import Game_LateFees from "./assets/games/late_fees.png";
-import Game_MyPrettyAlien from "./assets/games/my_pretty_alien.png";
-import Game_OpenAssassin from "./assets/games/open_assassin.png";
-import Game_PlanetEscape from "./assets/games/planet_escape.png";
-import Game_SoulMagician from "./assets/games/soul_magician.png";
-import Game_SubjectZero from "./assets/games/subject_zero.png";
 
 import { Project } from "./gamelist";
 import projects from "./gamelist";

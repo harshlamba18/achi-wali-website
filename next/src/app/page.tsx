@@ -1,18 +1,11 @@
 import {
-  Arima,
-  Bitcount_Prop_Single,
   Righteous,
   Roboto,
-  Rowdies,
-  Ubuntu,
 } from "next/font/google";
-import Image from "next/image";
 
-import BgHero from "./assets/bg-hero.png";
 import Navbar from "./components/navbar";
 import FeaturedProjects from "./featuredprojects";
 import Footer from "./footer";
-import FeaturedProjects2 from "./featuredprojects2";
 
 // import LandingVideoMP4 from "./landingvideo.mp4";
 

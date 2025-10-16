@@ -3,10 +3,8 @@ import {
   Star,
   Calendar,
   Clock,
-  User,
   Eye,
   Heart,
-  MessageCircle,
   ArrowRight,
 } from "lucide-react";
 import Link from "next/link";
@@ -154,7 +152,7 @@ export default async function Blog() {
             </div>
 
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-              {featuredPosts.slice(0, 2).map((post, index) => (
+              {featuredPosts.slice(0, 2).map((post) => (
                 <article key={post.slug} className="group">
                   <Link href={`/blog/${post.slug}`}>
                     <div className="bg-gray-900/50 backdrop-blur-xl rounded-2xl border border-gray-800 overflow-hidden hover:border-pink-500/50 transition-all duration-500 h-full">

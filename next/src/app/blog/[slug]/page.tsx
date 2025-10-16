@@ -1,9 +1,7 @@
 import { notFound } from "next/navigation";
-import { compileMDX, MDXRemote } from "next-mdx-remote/rsc";
 import { getAllPosts, getPost } from "../lib/mdx";
 import "../lib/mdx.css";
 
-import Navbar from "../../components/navbar";
 import Link from "next/link";
 
 export async function generateStaticParams() {

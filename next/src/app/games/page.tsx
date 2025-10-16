@@ -1,26 +1,18 @@
 "use client";
 
 import Navbar from "../components/navbar";
-import { Project } from "../gamelist";
 import Footer from "../footer";
 import _Projects from "../gamelist";
-import { arimaFont, robotoFont, righteousFont } from "../fonts";
+import { robotoFont, righteousFont } from "../fonts";
 import Image from "next/image";
 import { useState, useEffect } from "react";
-import { motion, AnimatePresence, propEffect } from "framer-motion";
+import { motion } from "framer-motion";
 import {
   ChevronLeft,
   ChevronRight,
   Play,
-  Star,
-  Download,
   ExternalLink,
-  Github,
-  Clock,
-  Calendar,
-  Award,
-  Sparkles,
-  Gamepad,
+  Github
 } from "lucide-react";
 import { RxAvatar } from "react-icons/rx";
 

@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { useSpring, useSprings, animated, config } from "@react-spring/web";
+import { useSprings, animated, config } from "@react-spring/web";
 import styled from "styled-components";
 import { motion } from "framer-motion";
 import Image from "next/image";
@@ -111,28 +111,6 @@ const CardDescription = styled.p`
   color: #e0e0e0;
   line-height: 1.6;
   margin-bottom: 20px;
-`;
-
-const TechStack = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  margin-top: 15px;
-`;
-
-const TechTag = styled.span`
-  background: rgba(255, 105, 180, 0.15);
-  padding: 6px 12px;
-  border-radius: 12px;
-  font-size: 0.8rem;
-  color: #ff69b4;
-  border: 1px solid rgba(255, 105, 180, 0.3);
-  transition: all 0.3s ease;
-
-  &:hover {
-    background: rgba(255, 105, 180, 0.3);
-    transform: translateY(-2px);
-  }
 `;
 
 const CardImageWrapper = styled.div`

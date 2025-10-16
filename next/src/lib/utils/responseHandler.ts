@@ -9,7 +9,7 @@ import {
 } from '@/lib/types/index.types';
 
 class ResponseHandler {
-    private data?: any;
+    private data?: object;
     private errors?: object;
     private message?: string;
     private statusCode:
@@ -32,7 +32,7 @@ class ResponseHandler {
         this.cookies = {};
     }
 
-    public sendSuccess(statusCode: SuccessResponseCodesEnum, data: any = {}) {
+    public sendSuccess(statusCode: SuccessResponseCodesEnum, data: object = {}) {
         this.statusCode = statusCode;
         this.data = data;
         this.action = true;

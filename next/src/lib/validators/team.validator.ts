@@ -1,11 +1,23 @@
 import { z } from "zod"
 import { allIbDField } from "./core.validator";
+import { APIControl } from "../types/api.types";
 
 const teamValidator = {
     get: z.object({
-        _id: allIbDField._id,
+        target: z.enum([
+            APIControl.Team.Get.ONE,
+            APIControl.Team.Get.ALL,
+        ]),
+        _id: allIbDField._id.optional(),
+    }).refine((data) => {
+        if (data.target === APIControl.Team.Get.ONE && !data._id) {
+            return false;
+        }
+        return true;
+    }, {
+        message: 'Missing required fields based on target',
+        path: ['_id'],
     }),
-    getAll: z.object({}),
     create: z.object({
         name: allIbDField.shortString,
         description: allIbDField.longString,
