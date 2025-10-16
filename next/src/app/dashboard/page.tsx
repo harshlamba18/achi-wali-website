@@ -2,6 +2,10 @@
 
 import { useState } from "react";
 import { Righteous, Roboto } from "next/font/google";
+import api from "../axiosApi";
+import toast from "react-hot-toast";
+import { useAuth } from "../context/authContext";
+import { useRouter } from "next/navigation";
 
 const heading_font = Righteous({
   subsets: ["latin"],
@@ -82,6 +86,9 @@ export default function Dashboard() {
     },
   ];
 
+  const { user, refreshUser } = useAuth();
+  const router = useRouter();
+
   const handleNewPostSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     console.log("New post data:", newPostData);
@@ -114,6 +121,21 @@ export default function Dashboard() {
     });
   };
 
+  const handleSignOut = async () => {
+    const apiResponse = await api("POST", "/auth/sign-out");
+
+    if (apiResponse.action === null) {
+      toast.error("Server Error");
+    } else if (apiResponse.action === false) {
+      toast.error(apiResponse.message);
+      console.log(apiResponse);
+    } else {
+      toast.success("Signed out");
+      refreshUser();
+      router.push("/auth/sign-in");
+    }
+  };
+
   const handleProjectInputChange = (
     e: React.ChangeEvent<
       HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
@@ -140,7 +162,7 @@ export default function Dashboard() {
               </div>
               <div>
                 <h2 className={`text-2xl text-white ${heading_font.className}`}>
-                  John Doe
+                  {user?.name ?? "Loading..."}
                 </h2>
                 <p className={`text-gray-400 ${paragraph_font.className}`}>
                   Game Developer
@@ -148,7 +170,7 @@ export default function Dashboard() {
                 <p
                   className={`text-gray-500 text-sm ${paragraph_font.className}`}
                 >
-                  Member since 2023
+                  Member since {user?.createdAt.getFullYear() ?? "Loading..."}
                 </p>
               </div>
             </div>
@@ -168,7 +190,7 @@ export default function Dashboard() {
                       Email
                     </label>
                     <p className={`text-white ${paragraph_font.className}`}>
-                      john.doe@example.com
+                      {user?.email ?? "Loading..."}
                     </p>
                   </div>
                   <div>
@@ -178,7 +200,7 @@ export default function Dashboard() {
                       Phone
                     </label>
                     <p className={`text-white ${paragraph_font.className}`}>
-                      +1 (555) 123-4567
+                      {user ? user.phoneNumber ?? "N/A" : "Loading..."}
                     </p>
                   </div>
                   <div>
@@ -594,7 +616,10 @@ export default function Dashboard() {
 
           {/* Footer */}
           <div className="p-4 border-t border-white/10">
-            <button className="w-full flex items-center space-x-3 px-4 py-3 text-gray-400 hover:text-red-400 hover:bg-red-500/10 rounded-lg transition-all duration-200">
+            <button
+              onClick={handleSignOut}
+              className="w-full flex items-center cursor-pointer space-x-3 px-4 py-3 text-gray-400 hover:text-red-400 hover:bg-red-500/10 rounded-lg transition-all duration-200"
+            >
               <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
                 <path d="M17 7l-1.41 1.41L18.17 11H8v2h10.17l-2.58 2.59L17 17l5-5z" />
               </svg>

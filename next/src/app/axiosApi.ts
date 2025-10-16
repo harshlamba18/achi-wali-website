@@ -1,6 +1,5 @@
-import { IResponse } from './types/response.types';
+import { IResponse } from "./types/response.types";
 import axios from "axios";
-
 
 const API_BASE_URL = "/api/";
 
@@ -15,12 +14,12 @@ const api = async (
     method: "GET" | "POST" | "PATCH" | "DELETE",
     url: string,
     data: {
-        body?: object,
-        query?: object
+        body?: object;
+        query?: object;
     } = {
         body: {},
-        query: {}
-    },
+        query: {},
+    }
 ): Promise<IResponse> => {
     data.body = data.body ?? {};
     data.query = data.query ?? {};
@@ -29,7 +28,7 @@ const api = async (
         const response = await axiosInstance({
             method,
             url,
-            ...(Object.keys(data.query).length ? {params: data.query}:{}),
+            ...(Object.keys(data.query).length ? { params: data.query } : {}),
             ...(method !== "GET" ? { data: data.body } : {}),
         });
 
@@ -41,10 +40,8 @@ const api = async (
         return {
             action: null,
             statusCode: 500,
-        }
+        };
     }
-}
+};
 
 export default api;
-
-
