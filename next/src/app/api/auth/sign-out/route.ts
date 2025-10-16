@@ -4,18 +4,12 @@ import authService from "@/lib/services/auth.service";
 import { cookieOptions } from "@/lib/utils/cookie";
 import { SESSION_COOKIE_NAME } from "@/lib/config/constants";
 
-type SignoutResponse = {
-  // edit this type while setup
-  token: string;
-};
-
-const POST = createHandler({
-  validate: authValidator.signOut,
+const POST = createServiceOnlyHandler({
+  validationSchema: authValidator.signOut,
   requireAuth: true,
   options: {
     service: authService.signOut,
-    successCode: SuccessResponseCodesEnum.OK,
-    onSuccess: (sDOut: SignoutResponse) => {
+    onSuccess: (sDOut) => {
       return {
         responseData: {},
         cookies: [

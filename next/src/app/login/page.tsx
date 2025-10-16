@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { Righteous, Roboto } from "next/font/google";
-import Image from "next/image";
+// import Image from "next/image";
 import Link from "next/link";
 import Navbar from "../components/navbar";
 // import GlowingCircle from "../assets/glowing-circle.svg";
