@@ -335,7 +335,10 @@ export default function ProjectsPage() {
                       </div>
 
                       <div className="mt-3 flex flex-wrap justify-center gap-3">
-                        {proj.links.map((link: any, i: number) => (
+                        {proj.links.map((link:{
+                          text:string,
+                          url:string
+                        }, i: number) => (
                           <a
                             key={i}
                             href={link.url}
