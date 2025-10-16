@@ -4,8 +4,12 @@ import { useState, useEffect } from "react";
 import { Righteous, Roboto } from "next/font/google";
 // import Image from "next/image";
 import Link from "next/link";
-import Navbar from "../components/navbar";
+import Navbar from "../../components/navbar";
 // import GlowingCircle from "../assets/glowing-circle.svg";
+import { useAuth } from "@/app/context/authContext";
+import api from "@/app/axiosApi";
+import toast from "react-hot-toast";
+import { useRouter } from "next/navigation";
 
 const heading_font = Righteous({
   subsets: ["latin"],
@@ -22,6 +26,9 @@ export default function Login() {
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [rememberMe, setRememberMe] = useState(false);
+
+  const {refreshUser} = useAuth();
+  const router = useRouter();
 
   // Floating particles animation
   useEffect(() => {
@@ -46,11 +53,28 @@ export default function Login() {
     e.preventDefault();
     setIsLoading(true);
 
-    // Simulate API call
-    await new Promise((resolve) => setTimeout(resolve, 2000));
+    const apiResponse =await  api("POST","/auth/sign-in",{
+      body: {
+        email,
+        password,
+      }
+    })
+
+    if (apiResponse.action === null){
+      toast.error("Server Error")
+    }
+    else if (apiResponse.action === false){
+      toast.error(apiResponse.message);
+      console.log(apiResponse);
+    }
+    else {
+      toast.success("Signed in successfully!");
+      refreshUser();
+      router.push('/dashboard');
+    }
 
     setIsLoading(false);
-    console.log("Login attempted with:", { email, password, rememberMe });
+    
   };
 
   return (

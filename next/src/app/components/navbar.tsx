@@ -14,8 +14,8 @@ export default function Navbar() {
     { name: "Games", href: "/games" },
     { name: "Projects", href: "/projects" },
     { name: "Blog", href: "/blog" },
-    { name: "Store", href: "/store" },
     { name: "Team", href: "/team" },
+    { name: "Sign In", href: "/auth/sign-in" },
     // { name: "Contact", href: "/contact" },
   ];
 
