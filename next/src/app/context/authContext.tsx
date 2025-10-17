@@ -29,7 +29,7 @@ const AuthProvider = (props: AuthContextProviderProps) => {
       setUser(null);
       localStorage.removeItem("userData");
     } else {
-      let user = apiResponse.data as unknown as IUser;
+      const user = apiResponse.data as unknown as IUser;
       user.createdAt = new Date(user.createdAt);
       user.updatedAt = new Date(user.updatedAt);
 

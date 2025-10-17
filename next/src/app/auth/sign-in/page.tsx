@@ -27,7 +27,7 @@ export default function Login() {
   const [showPassword, setShowPassword] = useState(false);
   const [rememberMe, setRememberMe] = useState(false);
 
-  const {refreshUser} = useAuth();
+  const { refreshUser } = useAuth();
   const router = useRouter();
 
   // Floating particles animation
@@ -53,28 +53,24 @@ export default function Login() {
     e.preventDefault();
     setIsLoading(true);
 
-    const apiResponse =await  api("POST","/auth/sign-in",{
+    const apiResponse = await api("POST", "/auth/sign-in", {
       body: {
         email,
         password,
-      }
-    })
+      },
+    });
 
-    if (apiResponse.action === null){
-      toast.error("Server Error")
-    }
-    else if (apiResponse.action === false){
-      toast.error(apiResponse.message);
-      console.log(apiResponse);
-    }
-    else {
+    if (apiResponse.action === null) {
+      toast.error("Server Error");
+    } else if (apiResponse.action === false) {
+      toast.error(apiResponse.statusCode + ": " + apiResponse.message);
+    } else {
       toast.success("Signed in successfully!");
       refreshUser();
-      router.push('/dashboard');
+      router.push("/dashboard");
     }
 
     setIsLoading(false);
-    
   };
 
   return (
@@ -306,7 +302,7 @@ export default function Login() {
                 <p className={`text-gray-400 ${paragraph_font.className}`}>
                   Don&apos;t have an account?{" "}
                   <Link
-                    href="/register"
+                    href="/auth/sign-up"
                     className="text-pink-400 hover:text-pink-300 transition-colors duration-200 font-semibold hover:underline"
                   >
                     Sign up here

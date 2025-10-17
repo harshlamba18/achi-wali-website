@@ -336,22 +336,24 @@ export default function ProjectsPage() {
                       </div>
 
                       <div className="mt-3 flex flex-wrap justify-center gap-3">
-                        {proj.links.map((link: any, i: number) => (
-                          <a
-                            key={i}
-                            href={link.url}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="flex items-center gap-2 rounded-lg bg-gradient-to-r from-pink-500/20 to-purple-500/20 px-4 py-2 font-semibold text-white backdrop-blur-sm border border-pink-500/30 transition-all duration-300 hover:scale-105 hover:shadow-[0_0_15px_rgba(236,72,153,0.5)]"
-                          >
-                            {link.text.toLowerCase().includes("git") ? (
-                              <Github className="h-4 w-4" />
-                            ) : (
-                              <ExternalLink className="h-4 w-4" />
-                            )}
-                            {link.text}
-                          </a>
-                        ))}
+                        {proj.links.map(
+                          (link: { url: string; text: string }, i: number) => (
+                            <a
+                              key={i}
+                              href={link.url}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="flex items-center gap-2 rounded-lg bg-gradient-to-r from-pink-500/20 to-purple-500/20 px-4 py-2 font-semibold text-white backdrop-blur-sm border border-pink-500/30 transition-all duration-300 hover:scale-105 hover:shadow-[0_0_15px_rgba(236,72,153,0.5)]"
+                            >
+                              {link.text.toLowerCase().includes("git") ? (
+                                <Github className="h-4 w-4" />
+                              ) : (
+                                <ExternalLink className="h-4 w-4" />
+                              )}
+                              {link.text}
+                            </a>
+                          )
+                        )}
                       </div>
 
                       <div className="mt-4 h-[1px] w-2/3 bg-gradient-to-r from-transparent via-pink-500/50 to-transparent animate-pulse" />
