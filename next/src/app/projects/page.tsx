@@ -207,7 +207,7 @@ export default function ProjectsPage() {
                   }}
                 >
                   {isCenter ? (
-                    <Link href={proj.links[0]?.url || "#"} legacyBehavior>
+                    <Link href={proj.links[0]?.url || "#"}>
                       <a
                         target="_blank"
                         rel="noopener noreferrer"
