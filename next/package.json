@@ -51,6 +51,7 @@
     "nodemailer": "^7.0.9",
     "otp-generator": "^4.0.1",
     "tailwindcss": "^4",
+    "tailwindcss-animate": "^1.0.7",
     "typescript": "^5"
   }
 }

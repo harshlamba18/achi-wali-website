@@ -205,7 +205,7 @@ const FeaturedProjects: React.FC = () => {
     <section className="relative min-h-screen overflow-hidden">
       <AnimatedBackground />
 
-      <div className="relative z-10 container mx-auto px-4 py-16">
+      <div className="relative z-0 container mx-auto px-4 py-16">
         <motion.div
           initial={{ opacity: 0, y: -30 }}
           animate={{ opacity: 1, y: 0 }}
