@@ -2,7 +2,7 @@ import sendEmail from "@/lib/utils/email";
 
 
 const sendOTPEmail = async (to: string, otp: string): Promise<void> => {
-    const subject = "Your One-Time Verification Code - CGS Society, IIT Kharagpur";
+    const subject = "Your One-Time Verification Code - CGS, IIT Kharagpur";
 
     const text = `
 Dear User,
@@ -16,8 +16,8 @@ This code is valid for the next 10 minutes. Please do not share it with anyone f
 If you did not initiate this request, you may safely ignore this message.
 
 Best regards,  
-CGS Society  
-Indian Institute of Technology, Kharagpur
+CGS,
+IIT Kharagpur
   `.trim();
 
     const html = `
@@ -46,12 +46,12 @@ Indian Institute of Technology, Kharagpur
 
             <p style="font-size: 16px; line-height: 1.6; margin-top: 40px;">
             Best regards,<br>
-            <strong>CGS Society</strong><br>
-            Indian Institute of Technology, Kharagpur
+            <strong>CGS,</strong><br>
+            Indian Institute of Technology Kharagpur
             </p>
 
             <div style="font-size: 12px; color: #999999; margin-top: 50px; text-align: center;">
-            &copy; ${new Date().getFullYear()} CGS Society, IIT Kharagpur. All rights reserved.
+            &copy; ${new Date().getFullYear()} CGS, IIT Kharagpur. All rights reserved.
             </div>
         </div>
     `;

@@ -1,4 +1,5 @@
 import systemLogger, { ELogLevel } from "@/lib/utils/logger";
+import AppError from "./error";
 
 type GetEnvVariable = {
     (envVarName: string, fatalIfNotFound: true): string;
@@ -11,11 +12,10 @@ const getEnvVariable: GetEnvVariable = ((envVarName, fatalIfNotFound) => {
     const envVarValue = process.env[envVarName];
 
     if (!envVarValue && fatalIfNotFound) {
-        systemLogger(
-            ELogLevel.FATAL,
-            `FATAL ERROR: Environment variable "${envVarName}" is not set!`
-        );
+        systemLogger(ELogLevel.FATAL, `FATAL ERROR: Environment variable "${envVarName}" is not set!`);
         systemLogger(ELogLevel.FATAL, `*** EXIT PROCESS IMMEDIATELY ***`);
+
+        throw new AppError(`FATAL ERROR: Environment variable "${envVarName}" is not set!`);
     }
 
     return envVarValue;

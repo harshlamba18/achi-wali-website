@@ -56,6 +56,7 @@ const allIbDField = {
         .transform((val) => new Types.ObjectId(val)),
     shortString: z.string().trim().max(255),
     longString: z.string().trim().max(4095),
+    bigString: z.string().trim().max(32767),
     boolean: z.boolean(),
     email: z.email().max(255).toLowerCase(),
     password: z.string().max(255),
@@ -64,6 +65,7 @@ const allIbDField = {
     roles: z.array(z.enum(EUserRole)),
     mediaKey: z.string().max(255).nullable(),
     phoneNumber: z.string().trim().max(20),
+    url: z.string().url().max(2048),
     link: z.object({
         label: z.string().trim().max(255),
         url: z.string().url().max(2048),
