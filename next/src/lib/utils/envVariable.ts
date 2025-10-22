@@ -13,9 +13,7 @@ const getEnvVariable: GetEnvVariable = ((envVarName, fatalIfNotFound) => {
 
     if (!envVarValue && fatalIfNotFound) {
         systemLogger(ELogLevel.FATAL, `FATAL ERROR: Environment variable "${envVarName}" is not set!`);
-        systemLogger(ELogLevel.FATAL, `*** EXITING PROCESS IMMEDIATELY ***`);
-
-        process.exit(-1);
+        systemLogger(ELogLevel.FATAL, `*** EXIT PROCESS IMMEDIATELY ***`);
     }
 
     return envVarValue;

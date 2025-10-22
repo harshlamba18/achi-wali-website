@@ -9,12 +9,13 @@ const cookieOptions = {
         const options: ICookieOptions = {
             maxAge: 2700000,
             httpOnly: true,
-            secure: true,
-            sameSite: "strict",
+            secure: false,
+            sameSite: "lax",
+            path: "/"
         }
 
-        if (httpsEnforced === "false") {
-            options.httpOnly = false;
+        if (httpsEnforced === "true") {
+            options.secure = true;
         }
 
         return options;
