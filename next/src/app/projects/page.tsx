@@ -76,7 +76,7 @@ export default function ProjectsPage() {
       <div className="min-h-screen relative z-10">
         <Navbar />
 
-        <div className="pt-36 pb-16 px-4 sm:px-8 lg:px-32 flex flex-col items-center">
+        <div className="pt-36 pb-16 px-2 sm:px-8 lg:px-4 flex flex-col items-center">
           <div className="w-full text-center">
             <motion.h1
               initial={{ opacity: 0, x: "-100%" }}
@@ -97,7 +97,7 @@ export default function ProjectsPage() {
           </p>
 
           <div
-            className="relative w-full max-w-7xl h-[450px] flex items-center justify-center overflow-hidden"
+            className="relative w-full max-w-7xl h-[550px] flex items-center justify-evenly overflow-hidden"
             style={{ perspective: isMobile ? "none" : "1600px" }}
           >
             {projects.map((proj, index) => {
@@ -147,7 +147,7 @@ export default function ProjectsPage() {
 
               const cardContent = (
                 <div
-                  className={`relative w-[320px] h-[330px] p-1.5 rounded-2xl z-10
+                  className={`relative w-[360px] h-[380px] p-1.5 rounded-2xl z-10
                     bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-500
                     shadow-lg shadow-pink-500/30
                     transition-transform duration-500 ease-in-out
@@ -207,14 +207,13 @@ export default function ProjectsPage() {
                   }}
                 >
                   {isCenter ? (
-                    <Link href={proj.links[0]?.url || "#"} legacyBehavior>
-                      <a
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        onClick={handleCenterCardClick}
-                      >
-                        {cardContent}
-                      </a>
+                    <Link
+                      href={proj.links[0]?.url || "#"}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      onClick={handleCenterCardClick}
+                    >
+                      {cardContent}
                     </Link>
                   ) : (
                     cardContent
@@ -225,13 +224,13 @@ export default function ProjectsPage() {
 
             <button
               onClick={prevSlide}
-              className="absolute top-1/2 left-3 z-20 -translate-y-1/2 rounded-full bg-black/30 p-3 text-gray-300 backdrop-blur-sm border border-pink-500/30 transition-all duration-300 ease-in-out hover:bg-black/50 hover:border-pink-500/70 hover:text-white hover:shadow-lg hover:shadow-pink-500/40 md:left-5"
+              className="absolute top-1/2 left-1 z-20 -translate-y-1/2 rounded-full bg-black/30 p-3 text-gray-300 backdrop-blur-sm border border-pink-500/30 transition-all duration-300 ease-in-out hover:bg-black/50 hover:border-pink-500/70 hover:text-white hover:shadow-lg hover:shadow-pink-500/40 md:left-5"
             >
               <MdArrowBackIos className="ml-2" />
             </button>
             <button
               onClick={nextSlide}
-              className="absolute top-1/2 right-3 z-20 -translate-y-1/2 rounded-full bg-black/30 p-3 text-gray-300 backdrop-blur-sm border border-pink-500/30 transition-all duration-300 ease-in-out hover:bg-black/50 hover:border-pink-500/70 hover:text-white hover:shadow-lg hover:shadow-pink-500/40 md:right-5"
+              className="absolute top-1/2 right-1 z-20 -translate-y-1/2 rounded-full bg-black/30 p-3 text-gray-300 backdrop-blur-sm border border-pink-500/30 transition-all duration-300 ease-in-out hover:bg-black/50 hover:border-pink-500/70 hover:text-white hover:shadow-lg hover:shadow-pink-500/40 md:right-5"
             >
               <MdArrowForwardIos className="ml-1" />
             </button>
@@ -337,7 +336,13 @@ export default function ProjectsPage() {
 
                       <div className="mt-3 flex flex-wrap justify-center gap-3">
                         {proj.links.map(
-                          (link: { url: string; text: string }, i: number) => (
+                          (
+                            link: {
+                              text: string;
+                              url: string;
+                            },
+                            i: number
+                          ) => (
                             <a
                               key={i}
                               href={link.url}
