@@ -18,13 +18,16 @@ export enum FailureResponseCodesEnum {
     SERVICE_UNAVAILABLE = 503,
 }
 
-export const DefaultFailedResponseMessagesEnum: Record<FailedResponseCodeEnum, string> = {
-    [FailedResponseCodeEnum.BAD_REQUEST]: 'Bad Request.',
-    [FailedResponseCodeEnum.UNAUTHORIZED]: 'Unauthorized.',
-    [FailedResponseCodeEnum.FORBIDDEN]: 'Forbidden.',
-    [FailedResponseCodeEnum.NOT_FOUND]: 'Not Found.',
-    [FailedResponseCodeEnum.CONFLICT]: 'Conflict.',
-    [FailedResponseCodeEnum.TOO_MANY_REQUESTS]: 'Too Many Requests.',
+export const DefaultFailedResponseMessagesEnum: Record<
+    FailedResponseCodeEnum,
+    string
+> = {
+    [FailedResponseCodeEnum.BAD_REQUEST]: "Bad Request.",
+    [FailedResponseCodeEnum.UNAUTHORIZED]: "Unauthorized.",
+    [FailedResponseCodeEnum.FORBIDDEN]: "Forbidden.",
+    [FailedResponseCodeEnum.NOT_FOUND]: "Not Found.",
+    [FailedResponseCodeEnum.CONFLICT]: "Conflict.",
+    [FailedResponseCodeEnum.TOO_MANY_REQUESTS]: "Too Many Requests.",
 };
 
 export interface ICookieOptions {
@@ -45,5 +48,3 @@ export interface JWTPayload {
     [key: string]: string;
     _id: string;
 }
-
-

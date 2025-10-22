@@ -1,7 +1,6 @@
 import { ICookieOptions } from "../types/response.types";
 import getEnvVariable from "./envVariable";
 
-
 const cookieOptions = {
     jwt: (() => {
         const httpsEnforced = getEnvVariable("HTTPS_ENFORCED", true);
@@ -20,7 +19,6 @@ const cookieOptions = {
 
         return options;
     })(),
-}
+};
 
 export { cookieOptions };
-

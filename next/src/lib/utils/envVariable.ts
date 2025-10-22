@@ -1,6 +1,5 @@
 import systemLogger, { ELogLevel } from "@/lib/utils/logger";
 
-
 type GetEnvVariable = {
     (envVarName: string, fatalIfNotFound: true): string;
     (envVarName: string, fatalIfNotFound: false): string | undefined;
@@ -18,6 +17,5 @@ const getEnvVariable: GetEnvVariable = ((envVarName, fatalIfNotFound) => {
 
     return envVarValue;
 }) as GetEnvVariable;
-
 
 export default getEnvVariable;
