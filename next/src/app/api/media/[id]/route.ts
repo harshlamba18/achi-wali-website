@@ -1,19 +1,19 @@
 import createHandler from '@/lib/handler';
-import featuredValidator from '@/lib/validators/featured.validator';
-import featuredServices from '@/lib/services/featured.service';
+import mediaValidator from '@/lib/validators/media.validator';
+import mediaServices from '@/lib/services/media.service';
 
 const DELETE = createHandler({
-    validationSchema: featuredValidator.remove,
+    validationSchema: mediaValidator.remove,
     dataUnifier: (req, _parsedData) => {
         const urlTokens = (new URL(req.url)).pathname.split("/");
 
         return {
-            _id: urlTokens[urlTokens.length - 1]
+            _id: urlTokens[urlTokens.length - 1],
         }
     },
     requireAuth: true,
     options: {
-        service: featuredServices.remove,
+        service: mediaServices.remove
     }
 });
 

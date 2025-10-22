@@ -1,5 +1,5 @@
 import { Schema, model, models } from 'mongoose';
-import { IMedia, EMediaTypes } from '@/lib/types/index.types';
+import { IMedia } from '@/lib/types/index.types';
 
 
 const MediaSchema = new Schema<IMedia>({
@@ -9,21 +9,10 @@ const MediaSchema = new Schema<IMedia>({
         unique: true,
         trim: true,
     },
-    type: {
-        type: Schema.Types.String,
-        enum: Object.values(EMediaTypes),
-        required: true,
-    },
     url: {
         type: Schema.Types.String,
         required: true,
         trim: true,
-    },
-    altText: {
-        type: Schema.Types.String,
-        required: true,
-        trim: true,
-        default: '',
     },
     uploadedBy: {
         type: Schema.Types.ObjectId,

@@ -8,7 +8,7 @@ const PATCH = createServiceOnlyHandler({
         const urlTokens = (new URL(req.url)).pathname.split("/");
 
         return {
-            _id: urlTokens[-2],
+            _id: urlTokens[urlTokens.length - 2],
             ...parsedData,
         }
     },

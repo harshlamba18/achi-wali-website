@@ -10,7 +10,7 @@ const GET = createServiceOnlyHandler({
 
         return {
             target: APIControl.Team.Get.Target.ONE,
-            _id: urlTokens[-1]
+            _id: urlTokens[urlTokens.length - 1]
         }
     },
     requireAuth: false,
@@ -27,7 +27,7 @@ const PATCH = createServiceOnlyHandler({
         const urlTokens = (new URL(req.url)).pathname.split("/");
 
         return {
-            _id: urlTokens[-1],
+            _id: urlTokens[urlTokens.length - 1],
             ...parsedData,
         }
     },

@@ -10,7 +10,7 @@ const GET = createHandler({
 
         return {
             target: APIControl.Blog.Get.Target.BY_SLUG,
-            slug: urlTokens[-1]
+            slug: urlTokens[urlTokens.length - 1]
         }
     },
     requireAuth: false,

@@ -116,17 +116,10 @@ export interface IBlogOfListExportable extends Omit<IBlogExportable, "content"> 
     useEslint: never;
 }
 
-export enum EMediaTypes {
-    IMAGE = 'IMAGE',
-    VIDEO = 'VIDEO',
-}
-
 export interface IMedia {
     _id: Types.ObjectId;
     key: string;
-    type: EMediaTypes;
     url: string;
-    altText: string;
     uploadedBy: Types.ObjectId;
     createdAt: Date;
     updatedAt: Date;

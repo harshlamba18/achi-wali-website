@@ -8,7 +8,7 @@ const PATCH = createHandler({
         const urlTokens = (new URL(req.url)).pathname.split("/");
 
         return {
-            _id: urlTokens[-1],
+            _id: urlTokens[urlTokens.length - 1],
             ...parsedData,
         }
     },
@@ -24,7 +24,7 @@ const DELETE = createHandler({
         const urlTokens = (new URL(req.url)).pathname.split("/");
 
         return {
-            _id: urlTokens[-1],
+            _id: urlTokens[urlTokens.length - 1],
         }
     },
     requireAuth: true,

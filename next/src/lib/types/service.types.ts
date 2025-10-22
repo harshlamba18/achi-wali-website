@@ -29,6 +29,8 @@ export enum ESECs {
 
     FEATURED_NOT_FOUND,
     ALREADY_FEATURED,
+
+    MEDIA_NOT_FOUND
 }
 
 export namespace SDIn {
@@ -200,6 +202,23 @@ export namespace SDIn {
         };
     }
 
+    export namespace Media {
+        export type Get = EmptyObject;
+
+        export type Sign = {
+            publicId: string;
+        }
+
+        export type Create = {
+            publicId: string;
+            url: string;
+        }
+
+        export type Remove = {
+            _id: Types.ObjectId;
+        }
+    }
+
     export namespace User {
         export type Get =
             | ({
@@ -251,7 +270,10 @@ export namespace SDOut {
                 label: string;
                 url: string;
             }[];
-            teamId: string | null;
+            team: {
+                _id: string | null;
+                name: string;
+            };
             roles: EUserRole[];
             createdAt: Date;
             updatedAt: Date;
@@ -390,6 +412,25 @@ export namespace SDOut {
             }[];
             coverImgMediaKey: string | null;
         }[];
+
+        export type Create = EmptyObject;
+        export type Remove = EmptyObject;
+    }
+
+    export namespace Media {
+        export type Get = {
+            _id: string;
+            key: string;
+            url: string;
+        }[];
+
+        export type Sign = {
+            signature: string;
+            timestamp: number;
+            folder: string;
+            cloudName: string;
+            apiKey: string;
+        }
 
         export type Create = EmptyObject;
         export type Remove = EmptyObject;
