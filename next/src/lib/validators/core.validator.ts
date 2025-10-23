@@ -1,6 +1,6 @@
 import { Types } from "mongoose";
 import { z, ZodSchema } from "zod";
-import { EUserRole } from "../types/domain.types";
+import { EProjectPortfolio, EUserRole } from "../types/domain.types";
 
 type ValidatedRequest<T> = {
     success: true;
@@ -56,6 +56,7 @@ const allIbDField = {
         .transform((val) => new Types.ObjectId(val)),
     shortString: z.string().trim().max(255),
     longString: z.string().trim().max(4095),
+    bigString: z.string().trim().max(32767),
     boolean: z.boolean(),
     email: z.email().max(255).toLowerCase(),
     password: z.string().max(255),
@@ -64,9 +65,15 @@ const allIbDField = {
     roles: z.array(z.enum(EUserRole)),
     mediaKey: z.string().max(255).nullable(),
     phoneNumber: z.string().trim().max(20),
+    projectPortfolio: z.enum(EProjectPortfolio),
+    url: z.string().url().max(2048),
     link: z.object({
-        label: z.string().trim().max(255),
+        text: z.string().trim().max(255),
         url: z.string().url().max(2048),
+    }),
+    tags: z.array(z.string().max(31).transform((str) => str.toLowerCase())),
+    slug: z.string().trim().max(255).regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/, {
+        message: "Slug must be URL-friendly (lowercase letters, numbers, and hyphens only)",
     }),
 }
 
