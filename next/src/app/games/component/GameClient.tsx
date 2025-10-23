@@ -1,7 +1,6 @@
 "use client";
 
 import Navbar from "../../components/navbar";
-import Footer from "../../footer";
 import { robotoFont, righteousFont } from "../../fonts";
 import Image from "next/image";
 import { useState, useEffect } from "react";
@@ -19,11 +18,14 @@ import { IProject } from "@/app/types/index.types";
 import { prettySafeImage } from "@/app/utils/pretty";
 
 interface GameClientProps {
-  games: IProject[];
-  featuredGames: IProject[];
+  games?: IProject[];
+  featuredGames?: IProject[];
 }
 
-export default function GameClient({ games, featuredGames }: GameClientProps) {
+export default function GameClient({
+  games = [],
+  featuredGames = [],
+}: GameClientProps) {
   const [selectedGame, setSelectedGame] = useState<number>(0);
   const [isAutoPlaying, setIsAutoPlaying] = useState(true);
 
@@ -65,7 +67,29 @@ export default function GameClient({ games, featuredGames }: GameClientProps) {
     return "#";
   };
 
-  const currentGame = featuredGames[selectedGame];
+  const currentGame = featuredGames[selectedGame] || {
+    _id: "",
+    title: "No Game Selected",
+    description: "No game available at the moment.",
+    coverImgMediaKey: "",
+    tags: [],
+    links: [],
+  };
+
+  // If no games are available, show a message
+  if (!featuredGames.length) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-900 relative">
+        <Navbar />
+        <div className="flex items-center justify-center min-h-screen">
+          <div className="text-center text-gray-400">
+            <h2 className="text-2xl font-bold mb-2">No Games Available</h2>
+            <p>Please check back later for our game collection.</p>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-900 relative">
@@ -128,8 +152,8 @@ export default function GameClient({ games, featuredGames }: GameClientProps) {
               className="relative h-[400px] lg:h-[600px] rounded-3xl overflow-hidden shadow-2xl border border-pink-500/20"
             >
               <Image
-                src={prettySafeImage(currentGame.coverImgMediaKey)}
-                alt={currentGame.title}
+                src={prettySafeImage(currentGame.coverImgMediaKey || "")}
+                alt={currentGame.title || "Game image"}
                 fill
                 className="object-cover transition-transform duration-700 group-hover:scale-105"
                 priority
@@ -190,7 +214,7 @@ export default function GameClient({ games, featuredGames }: GameClientProps) {
                     transition={{ delay: 0.6 }}
                     className="flex flex-wrap gap-2"
                   >
-                    {currentGame.tags.map((tech, index) => (
+                    {currentGame.tags?.map((tech, index) => (
                       <span
                         key={index}
                         className="px-3 py-1 bg-gray-800/60 backdrop-blur-sm rounded-full text-gray-300 text-sm border border-gray-600/40"
@@ -435,24 +459,21 @@ export default function GameClient({ games, featuredGames }: GameClientProps) {
             >
               <div className="relative h-48 lg:h-56 overflow-hidden">
                 <Image
-                  src={prettySafeImage(game.coverImgMediaKey)}
-                  alt={game.title}
+                  src={prettySafeImage(game.coverImgMediaKey || "")}
+                  alt={game.title || "Game image"}
                   fill
                   className="object-cover transition-all duration-700 group-hover:scale-110"
-                />
-
+                />{" "}
                 <div
                   className={`absolute inset-0 bg-gradient-to-t from-pink-600 via-rose-500 to-orange-400 opacity-20 group-hover:opacity-30 transition-opacity duration-500`}
                 ></div>
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
-
                 {/* <div className="absolute top-4 left-4">
                   <div className="flex items-center gap-2 px-3 py-1 bg-black/70 backdrop-blur-sm rounded-full text-pink-300 text-sm font-semibold border border-pink-500/30">
                     {game.icon}
                     {game.category}
                   </div>
                 </div> */}
-
                 <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300">
                   <div className="flex gap-3">
                     <motion.button
@@ -471,7 +492,6 @@ export default function GameClient({ games, featuredGames }: GameClientProps) {
                     </motion.button>
                   </div>
                 </div>
-
                 {/* <div className="absolute top-4 right-4">
                   <div className="flex items-center gap-1 px-2 py-1 bg-black/70 backdrop-blur-sm rounded-full text-yellow-400 text-sm">
                     <Star className="w-4 h-4 fill-current" />
@@ -495,7 +515,7 @@ export default function GameClient({ games, featuredGames }: GameClientProps) {
                 </div>
 
                 <div className="flex flex-wrap gap-2">
-                  {game.tags.slice(0, 2).map((tech, techIndex) => (
+                  {game.tags?.slice(0, 2).map((tech, techIndex) => (
                     <span
                       key={techIndex}
                       className="px-2 py-1 bg-gray-800/60 text-gray-300 text-xs rounded-full border border-gray-600/40 hover:border-pink-500/40 hover:text-pink-300 transition-all duration-300"
@@ -503,9 +523,9 @@ export default function GameClient({ games, featuredGames }: GameClientProps) {
                       {tech}
                     </span>
                   ))}
-                  {game.tags.length > 2 && (
+                  {(game.tags?.length ?? 0) > 2 && (
                     <span className="px-2 py-1 bg-pink-500/20 text-pink-300 text-xs rounded-full border border-pink-500/40">
-                      +{game.tags.length - 2}
+                      +{(game.tags?.length ?? 0) - 2}
                     </span>
                   )}
                 </div>
@@ -522,7 +542,7 @@ export default function GameClient({ games, featuredGames }: GameClientProps) {
                     </div> */}
                     <div className="flex items-center gap-1">
                       <RxAvatar className="w-4 h-4" />
-                      <span>{game.authors[0].name}</span>
+                      <span>{game.authors?.[0]?.name || "Anonymous"}</span>
                     </div>
                   </div>
 
@@ -581,8 +601,6 @@ export default function GameClient({ games, featuredGames }: GameClientProps) {
           ))}
         </motion.div> */}
       </div>
-
-      <Footer />
     </div>
   );
 }

@@ -1326,7 +1326,7 @@ export default function Dashboard() {
                 <button
                   type="button"
                   onClick={() =>
-                    setShowBlogUpdateModal((prev) => {
+                    setShowBlogUpdateModal(() => {
                       return {
                         show: false,
                         id: null,
@@ -1476,7 +1476,7 @@ export default function Dashboard() {
                   >
                     Project Links{" "}
                     <span className="text-neutral-500">
-                      (use "live-demo" and "github" for advanced cards.)
+                      (use live-demo and github for advanced cards.)
                     </span>
                   </label>
                   <button
