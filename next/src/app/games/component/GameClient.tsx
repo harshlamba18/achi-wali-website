@@ -101,7 +101,7 @@ export default function GameClient({
         <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-pink-600/10 rounded-full blur-3xl animate-pulse delay-2000"></div>
       </div>
 
-      <div className="relative z-10 pt-24 px-16 lg:px-64 h-screen flex flex-col">
+      <div className="relative z-10 pt-16 sm:pt-20 lg:pt-24 px-4 sm:px-8 md:px-16 lg:px-24 xl:px-32 2xl:px-64 min-h-screen flex flex-col">
         <motion.div
           initial={{ opacity: 0, y: -30 }}
           animate={{ opacity: 1, y: 0 }}
@@ -194,7 +194,7 @@ export default function GameClient({
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.4 }}
-                    className={`text-4xl lg:text-5xl font-bold text-white drop-shadow-2xl ${righteousFont.className}`}
+                    className={`text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-white drop-shadow-2xl ${righteousFont.className} leading-tight`}
                   >
                     {currentGame.title}
                   </motion.h2>
@@ -203,7 +203,7 @@ export default function GameClient({
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.5 }}
-                    className={`text-gray-300 text-lg max-w-2xl ${robotoFont.className}`}
+                    className={`text-gray-300 text-sm sm:text-base md:text-lg max-w-2xl ${robotoFont.className} line-clamp-3 sm:line-clamp-none`}
                   >
                     {currentGame.description}
                   </motion.p>
@@ -289,7 +289,7 @@ export default function GameClient({
           </div>
 
           <div className="lg:col-span-1 space-y-4">
-            <div className="flex lg:flex-col gap-4 overflow-x-auto lg:overflow-visible pb-4 lg:pb-0">
+                  <div className="flex lg:flex-col gap-3 sm:gap-4 overflow-x-auto lg:overflow-visible pb-4 lg:pb-0 px-2 -mx-2 snap-x snap-mandatory sm:snap-none">
               {featuredGames.map((game, index) => (
                 <motion.div
                   key={game._id}
@@ -297,7 +297,7 @@ export default function GameClient({
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ delay: index * 0.1 }}
                   onClick={() => selectGame(index)}
-                  className={`relative flex-shrink-0 w-24 h-24 lg:w-full lg:h-32 rounded-2xl overflow-hidden cursor-pointer transition-all duration-300 border-2 ${
+                  className={`relative flex-shrink-0 w-24 h-24 sm:w-28 sm:h-28 lg:w-full lg:h-[120px] rounded-2xl overflow-hidden cursor-pointer transition-all duration-300 border-2 snap-center ${
                     selectedGame === index
                       ? "border-pink-500 shadow-lg shadow-pink-500/25 scale-105"
                       : "border-gray-700/50 hover:border-pink-500/50 hover:scale-102"
@@ -446,7 +446,7 @@ export default function GameClient({
           </div>
         </motion.div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 mb-20">
+        <div           className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6 lg:gap-8 mb-16 sm:mb-20">
           {games.map((game, index) => (
             <motion.div
               key={game._id}
