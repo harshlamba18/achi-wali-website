@@ -1,13 +1,13 @@
 import AI from "./assets/projects/AI.jpg";
 import ChatVault from "./assets/projects/Chat.jpg";
-import CryptoDashboard from "./assets/projects/Crpto.webp";
+import CryptoDashboard from "./assets/projects/Crpto.jpg";
 import ExpenseTracker from "./assets/projects/Expense.jpg";
-import GamingHub from "./assets/projects/Gaming.webp";
-import KGP_Eats from "./assets/projects/KGP.webp";
+import GamingHub from "./assets/projects/Gaming.jpg";
+import KGP_Eats from "./assets/projects/KGP.jpg";
 import Portfolio from "./assets/projects/portfolio.jpg";
 import SmartInventory from "./assets/projects/Smart.jpg";
-import TaskMate from "./assets/projects/Taskmate.webp";
-import CampusConnect from "./assets/projects/Campus.webp";
+import TaskMate from "./assets/projects/Taskmate.jpg";
+import CampusConnect from "./assets/projects/Campus.jpg";
 
 const projectList = [
   { 
