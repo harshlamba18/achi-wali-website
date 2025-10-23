@@ -52,18 +52,6 @@ export default function ProjectsPage() {
     setTimer(0);
   };
 
-  const prevSlide = () => {
-    setCurrentIndex(
-      (prev) => (prev - 1 + featuredProjects.length) % featuredProjects.length
-    );
-    setTimer(0);
-  };
-
-  const nextSlide = () => {
-    setCurrentIndex((prev) => (prev + 1) % featuredProjects.length);
-    setTimer(0);
-  };
-
   useEffect(() => {
     setTimer(0);
     const interval = setInterval(() => {
