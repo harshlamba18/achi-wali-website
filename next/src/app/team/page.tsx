@@ -196,10 +196,12 @@ export default function GameDev() {
           }}></div>
         </div>
 
-        <div className="relative z-10 max-w-[90rem] mx-auto">
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-6 lg:gap-8">
+        <div className="relative z-10 max-w-[96rem] mx-auto">
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-6 gap-6 lg:gap-8 2xl:gap-10">
             {teamMembers.map((member, index) => (
-              <TeamCard key={index} member={member} index={index} />
+              <div key={index} className="lg:max-w-[280px] 2xl:max-w-[300px] mx-auto w-full">
+                <TeamCard member={member} index={index} />
+              </div>
             ))}
           </div>
         </div>
