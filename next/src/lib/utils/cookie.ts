@@ -10,8 +10,8 @@ const cookieOptions = {
             httpOnly: true,
             secure: false,
             sameSite: "lax",
-            path: "/",
-        };
+            path: "/"
+        }
 
         if (httpsEnforced === "true") {
             options.secure = true;
