@@ -7,14 +7,13 @@ import toast from "react-hot-toast";
 import { useAuth } from "../context/authContext";
 import { useRouter } from "next/navigation";
 import {
-  IBlog,
   IBlogOfList,
   IMedia,
   IMediaSignedToken,
   IProject,
 } from "../types/domain.types";
 import { prettyDate, prettyDescription } from "../utils/pretty";
-import { HandMetal } from "lucide-react";
+// import { HandMetal } from "lucide-react";
 
 const heading_font = Righteous({
   subsets: ["latin"],

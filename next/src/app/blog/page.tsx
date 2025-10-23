@@ -1,11 +1,11 @@
 import React from "react";
-import { ArrowRight, Calendar, Clock, Eye, Heart, Star } from "lucide-react";
+import { ArrowRight, Calendar, Clock, Star } from "lucide-react";
 import Link from "next/link";
 import Navbar from "../components/navbar";
 import Footer from "../footer";
 import BlogList from "./components/BlogList";
 import { Righteous, Roboto } from "next/font/google";
-import CGSLogo from "../assets/logo.png";
+// import CGSLogo from "../assets/logo.png";
 import { IBlogOfList } from "../types/domain.types";
 import api from "../axiosApi";
 import { prettyDate, prettySafeImage, prettyShortName } from "../utils/pretty";
