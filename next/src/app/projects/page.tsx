@@ -207,14 +207,13 @@ export default function ProjectsPage() {
                   }}
                 >
                   {isCenter ? (
-                    <Link href={proj.links[0]?.url || "#"}>
-                      <a
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        onClick={handleCenterCardClick}
-                      >
-                        {cardContent}
-                      </a>
+                    <Link 
+                      href={proj.links[0]?.url || "#"}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      onClick={handleCenterCardClick}
+                    >
+                      {cardContent}
                     </Link>
                   ) : (
                     cardContent

@@ -59,7 +59,7 @@ export default function Games() {
         <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-pink-600/10 rounded-full blur-3xl animate-pulse delay-2000"></div>
       </div>
 
-      <div className="relative z-10 pt-24 px-16 lg:px-64 h-screen flex flex-col">
+      <div className="relative z-10 pt-16 sm:pt-20 lg:pt-24 px-4 sm:px-8 md:px-16 lg:px-24 xl:px-32 2xl:px-64 min-h-screen flex flex-col">
         <motion.div
           initial={{ opacity: 0, y: -30 }}
           animate={{ opacity: 1, y: 0 }}
@@ -69,11 +69,11 @@ export default function Games() {
           <div className="flex items-center justify-between">
             <div>
               <h1
-                className={`text-4xl lg:text-6xl font-bold bg-gradient-to-r from-pink-400 via-pink-300 to-white bg-clip-text text-transparent ${righteousFont.className} mb-2`}
+                className={`text-3xl sm:text-4xl lg:text-6xl font-bold bg-gradient-to-r from-pink-400 via-pink-300 to-white bg-clip-text text-transparent ${righteousFont.className} mb-2`}
               >
                 Game Gallery
               </h1>
-              <p className={`text-gray-400 text-lg ${robotoFont.className}`}>
+              <p className={`text-gray-400 text-base sm:text-lg ${robotoFont.className}`}>
                 Featured Games by CGS
               </p>
             </div>
@@ -100,14 +100,14 @@ export default function Games() {
           </div>
         </motion.div>
 
-        <div className="flex-1 grid grid-cols-1 lg:grid-cols-4 gap-8 mb-8">
+        <div className="flex-1 grid grid-cols-1 lg:grid-cols-4 gap-4 sm:gap-6 lg:gap-8 mb-8">
           <div className="lg:col-span-3 relative group">
             <motion.div
               key={selectedGame}
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.5, ease: "easeOut" }}
-              className="relative h-[400px] lg:h-[600px] rounded-3xl overflow-hidden shadow-2xl border border-pink-500/20"
+              className="relative h-[300px] sm:h-[400px] lg:h-[500px] xl:h-[600px] rounded-3xl overflow-hidden shadow-2xl border border-pink-500/20"
             >
               <Image
                 src={currentGame.image}
@@ -152,7 +152,7 @@ export default function Games() {
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.4 }}
-                    className={`text-4xl lg:text-5xl font-bold text-white drop-shadow-2xl ${righteousFont.className}`}
+                    className={`text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-white drop-shadow-2xl ${righteousFont.className} leading-tight`}
                   >
                     {currentGame.title}
                   </motion.h2>
@@ -161,7 +161,7 @@ export default function Games() {
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.5 }}
-                    className={`text-gray-300 text-lg max-w-2xl ${robotoFont.className}`}
+                    className={`text-gray-300 text-sm sm:text-base md:text-lg max-w-2xl ${robotoFont.className} line-clamp-3 sm:line-clamp-none`}
                   >
                     {currentGame.description}
                   </motion.p>
@@ -172,29 +172,46 @@ export default function Games() {
                     transition={{ delay: 0.6 }}
                     className="flex flex-wrap gap-2"
                   >
-                    {currentGame.technologies.map((tech, index) => (
-                      <span
-                        key={index}
-                        className="px-3 py-1 bg-gray-800/60 backdrop-blur-sm rounded-full text-gray-300 text-sm border border-gray-600/40"
-                      >
-                        {tech}
-                      </span>
-                    ))}
+                    <div className="hidden sm:flex flex-wrap gap-2">
+                      {currentGame.technologies.map((tech, index) => (
+                        <span
+                          key={index}
+                          className="px-2 sm:px-3 py-0.5 sm:py-1 bg-gray-800/60 backdrop-blur-sm rounded-full text-gray-300 text-xs sm:text-sm border border-gray-600/40 hover:border-pink-500/30 hover:text-pink-300 transition-all duration-300"
+                        >
+                          {tech}
+                        </span>
+                      ))}
+                    </div>
+                    <div className="flex sm:hidden flex-wrap gap-2">
+                      {currentGame.technologies.slice(0, 2).map((tech, index) => (
+                        <span
+                          key={index}
+                          className="px-2 sm:px-3 py-0.5 sm:py-1 bg-gray-800/60 backdrop-blur-sm rounded-full text-gray-300 text-xs sm:text-sm border border-gray-600/40 hover:border-pink-500/30 hover:text-pink-300 transition-all duration-300"
+                        >
+                          {tech}
+                        </span>
+                      ))}
+                      {currentGame.technologies.length > 2 && (
+                        <span className="px-2 py-0.5 bg-pink-500/20 text-pink-300 text-xs rounded-full border border-pink-500/40">
+                          +{currentGame.technologies.length - 2}
+                        </span>
+                      )}
+                    </div>
                   </motion.div>
 
                   <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.7 }}
-                    className="flex gap-4 mt-6"
+                    className="flex flex-col sm:flex-row gap-3 sm:gap-4 mt-4 sm:mt-6"
                   >
-                    <button className="flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-pink-500 to-pink-600 hover:from-pink-600 hover:to-pink-700 text-white font-semibold rounded-xl transition-all duration-300 hover:scale-105 shadow-lg hover:shadow-pink-500/25">
-                      <Play className="w-5 h-5" />
+                    <button className="flex items-center justify-center gap-2 px-4 sm:px-6 py-2.5 sm:py-3 bg-gradient-to-r from-pink-500 to-pink-600 hover:from-pink-600 hover:to-pink-700 text-white text-sm sm:text-base font-semibold rounded-xl transition-all duration-300 hover:scale-105 shadow-lg hover:shadow-pink-500/25 w-full sm:w-auto">
+                      <Play className="w-4 h-4 sm:w-5 sm:h-5" />
                       Play Now
                     </button>
 
-                    <button className="flex items-center gap-2 px-6 py-3 bg-gray-800/60 hover:bg-gray-700/60 backdrop-blur-sm text-white font-semibold rounded-xl transition-all duration-300 hover:scale-105 border border-gray-600/40 hover:border-gray-500/60">
-                      <Github className="w-5 h-5" />
+                    <button className="flex items-center justify-center gap-2 px-4 sm:px-6 py-2.5 sm:py-3 bg-gray-800/60 hover:bg-gray-700/60 backdrop-blur-sm text-white text-sm sm:text-base font-semibold rounded-xl transition-all duration-300 hover:scale-105 border border-gray-600/40 hover:border-gray-500/60 w-full sm:w-auto">
+                      <Github className="w-4 h-4 sm:w-5 sm:h-5" />
                       View Code
                     </button>
                   </motion.div>
@@ -202,7 +219,7 @@ export default function Games() {
               </div>
 
               {isAutoPlaying && (
-                <div className="absolute top-4 left-4 right-4">
+                <div className="absolute top-4 left-4 right-4 hidden sm:block">
                   <div className="w-full h-1 bg-gray-800/50 rounded-full overflow-hidden">
                     <motion.div
                       className="h-full bg-gradient-to-r from-pink-500 to-pink-400"
@@ -218,7 +235,7 @@ export default function Games() {
           </div>
 
           <div className="lg:col-span-1 space-y-4">
-            <div className="flex lg:flex-col gap-4 overflow-x-auto lg:overflow-visible pb-4 lg:pb-0">
+            <div className="flex lg:flex-col gap-3 sm:gap-4 overflow-x-auto lg:overflow-visible pb-4 lg:pb-0 px-2 -mx-2 snap-x snap-mandatory sm:snap-none">
               {projects.map((game, index) => (
                 <motion.div
                   key={game.id}
@@ -226,7 +243,7 @@ export default function Games() {
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ delay: index * 0.1 }}
                   onClick={() => selectGame(index)}
-                  className={`relative flex-shrink-0 w-24 h-24 lg:w-full lg:h-32 rounded-2xl overflow-hidden cursor-pointer transition-all duration-300 border-2 ${
+                  className={`relative flex-shrink-0 w-24 h-24 sm:w-28 sm:h-28 lg:w-full lg:h-[120px] rounded-2xl overflow-hidden cursor-pointer transition-all duration-300 border-2 snap-center ${
                     selectedGame === index
                       ? "border-pink-500 shadow-lg shadow-pink-500/25 scale-105"
                       : "border-gray-700/50 hover:border-pink-500/50 hover:scale-102"
@@ -325,39 +342,46 @@ export default function Games() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 1 }}
-          className="flex justify-center gap-2 pb-8"
+          className="flex justify-center items-center gap-3 sm:gap-4 pb-6 sm:pb-8"
         >
           {projects.map((_, index) => (
             <button
               key={index}
               onClick={() => selectGame(index)}
-              className={`w-3 h-3 rounded-full transition-all duration-300 ${
+              className={`group relative transition-all duration-300`}
+            >
+              <div className={`w-2.5 sm:w-3 h-2.5 sm:h-3 rounded-full transition-all duration-300 ${
                 selectedGame === index
-                  ? "bg-pink-500 scale-125"
-                  : "bg-gray-600 hover:bg-gray-500"
-              }`}
-            />
+                  ? "bg-pink-500 scale-125 ring-4 ring-pink-500/20"
+                  : "bg-gray-600 hover:bg-gray-500 hover:ring-2 hover:ring-pink-500/10"
+              }`} />
+              <div className={`absolute -top-8 left-1/2 transform -translate-x-1/2 px-2 py-1 bg-gray-900/90 backdrop-blur-sm rounded-md text-xs whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none ${
+                selectedGame === index ? "text-pink-300" : "text-gray-300"
+              }`}>
+                Game {index + 1}
+              </div>
+            </button>
           ))}
         </motion.div>
       </div>
 
-      <div className="min-h-screen flex flex-col pt-24 px-4 lg:px-16 xl:px-32 2xl:px-64 relative">
+      <div className="min-h-screen flex flex-col pt-16 sm:pt-20 lg:pt-24 px-4 sm:px-8 md:px-16 lg:px-24 xl:px-32 2xl:px-64 relative">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
           viewport={{ once: true }}
-          className="mb-16"
+          className="mb-12 sm:mb-16"
         >
           <div className="flex items-center justify-between flex-wrap gap-4">
             <div>
               <h2
-                className={`text-4xl lg:text-5xl font-bold bg-gradient-to-r from-pink-400 via-pink-300 to-white bg-clip-text text-transparent ${righteousFont.className} mb-4`}
+                className={`text-3xl sm:text-4xl lg:text-5xl font-bold bg-gradient-to-r from-pink-400 via-pink-300 to-white bg-clip-text text-transparent ${righteousFont.className} mb-3 sm:mb-4`}
               >
                 Complete Collection
               </h2>
               <p
-                className={`text-gray-400 text-lg ${robotoFont.className} max-w-2xl`}
+                className={`text-gray-400 text-base sm:text-lg ${robotoFont.className} max-w-2xl`}
               >
                 Explore the complete set of games designed and developed by
                 members of CGS
@@ -375,7 +399,7 @@ export default function Games() {
           </div>
         </motion.div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 mb-20">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6 lg:gap-8 mb-16 sm:mb-20">
           {_Projects.map((game, index) => (
             <motion.div
               key={game.id}
@@ -433,15 +457,15 @@ export default function Games() {
                 </div> */}
               </div>
 
-              <div className="p-6 space-y-4">
+              <div className="p-4 sm:p-6 space-y-3 sm:space-y-4">
                 <div>
                   <h3
-                    className={`text-xl lg:text-2xl font-bold text-white mb-2 group-hover:text-pink-300 transition-colors duration-300 ${righteousFont.className}`}
+                    className={`text-lg sm:text-xl lg:text-2xl font-bold text-white mb-1 sm:mb-2 group-hover:text-pink-300 transition-colors duration-300 ${righteousFont.className} line-clamp-1`}
                   >
                     {game.title}
                   </h3>
                   <p
-                    className={`text-gray-400 text-sm leading-relaxed ${robotoFont.className}`}
+                    className={`text-gray-400 text-xs sm:text-sm leading-relaxed ${robotoFont.className} line-clamp-2`}
                   >
                     {game.description}
                   </p>
