@@ -3,7 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useState, useEffect } from "react";
-import { motion } from "framer-motion";
+import { motion,Variants } from "framer-motion";
 import { righteousFont, robotoFont } from "../../fonts";
 import { ExternalLink, Github } from "lucide-react";
 import { MdArrowBackIos, MdArrowForwardIos } from "react-icons/md";
@@ -19,7 +19,7 @@ const detailsVariants = {
   },
 };
 
-const itemVariants: any = {
+const itemVariants: Variants = {
   hidden: { opacity: 0, y: 20 },
   visible: { opacity: 1, y: 0, transition: { type: "spring", stiffness: 100 } },
 };

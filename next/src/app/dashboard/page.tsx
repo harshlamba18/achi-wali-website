@@ -15,6 +15,7 @@ import {
 } from "../types/domain.types";
 import { prettyDate, prettyDescription } from "../utils/pretty";
 import { HandMetal } from "lucide-react";
+import { Listbox } from "@headlessui/react";
 
 const heading_font = Righteous({
   subsets: ["latin"],
@@ -1404,23 +1405,43 @@ export default function Dashboard() {
                   >
                     Portfolio Type
                   </label>
-                  <select
-                    name="portfolio"
+                  <Listbox
                     value={newProjectData.portfolio}
-                    onChange={handleProjectInputChange}
-                    className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white focus:outline-none focus:border-pink-400 focus:ring-2 focus:ring-pink-400/20 transition-all duration-300"
-                    required
+                    onChange={(value) =>
+                      setNewProjectData((prev) => ({
+                        ...prev,
+                        portfolio: value,
+                      }))
+                    }
                   >
-                    <option value="" disabled>
-                      Select a portfolio...
-                    </option>
-                    <option value="GAME">GAME</option>
-                    <option value="GRAPHICS">GRAPHICS</option>
-                    <option value="RND">RND</option>
-                  </select>
+                    <div className="relative">
+                      {/* Button showing selected value */}
+                      <Listbox.Button
+                        className={`w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white focus:outline-none focus:border-pink-400 focus:ring-2 focus:ring-pink-400/20 transition-all duration-300`}
+                      >
+                        {newProjectData.portfolio || "Select a portfolio..."}
+                      </Listbox.Button>
+
+                      {/* Dropdown menu */}
+                      <Listbox.Options className="absolute mt-2 w-full rounded-xl bg-[#1a1a1a] border border-white/10 shadow-lg overflow-hidden z-20">
+                        {["GAME", "GRAPHICS", "RND"].map((item) => (
+                          <Listbox.Option
+                            key={item}
+                            value={item}
+                            className={({ active }) =>
+                              `px-4 py-2 cursor-pointer transition text-white ${
+                                active ? "bg-pink-600/40" : "bg-[#1a1a1a]"
+                              }`
+                            }
+                          >
+                            {item}
+                          </Listbox.Option>
+                        ))}
+                      </Listbox.Options>
+                    </div>
+                  </Listbox>
                 </div>
 
-                {/* Tags Field (Replaced Technology) */}
                 <div>
                   <label
                     className={`block text-gray-300 text-sm font-medium mb-2 ${paragraph_font.className}`}
