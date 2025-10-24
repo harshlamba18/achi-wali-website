@@ -77,7 +77,7 @@ export default function GameClient({
   };
 
   // If no games are available, show a message
-  if (!featuredGames.length) {
+  if (!games.length) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-900 relative">
         <Navbar />
@@ -289,7 +289,7 @@ export default function GameClient({
           </div>
 
           <div className="lg:col-span-1 space-y-4">
-                  <div className="flex lg:flex-col gap-3 sm:gap-4 overflow-x-auto lg:overflow-visible pb-4 lg:pb-0 px-2 -mx-2 snap-x snap-mandatory sm:snap-none">
+            <div className="flex lg:flex-col gap-3 sm:gap-4 overflow-x-auto lg:overflow-visible pb-4 lg:pb-0 px-2 -mx-2 snap-x snap-mandatory sm:snap-none">
               {featuredGames.map((game, index) => (
                 <motion.div
                   key={game._id}
@@ -446,7 +446,7 @@ export default function GameClient({
           </div>
         </motion.div>
 
-        <div           className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6 lg:gap-8 mb-16 sm:mb-20">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6 lg:gap-8 mb-16 sm:mb-20">
           {games.map((game, index) => (
             <motion.div
               key={game._id}
