@@ -13,7 +13,6 @@ import {
   IProject,
 } from "../types/domain.types";
 import { prettyDate, prettyDescription } from "../utils/pretty";
-import { HandMetal } from "lucide-react";
 import { Listbox } from "@headlessui/react";
 
 const heading_font = Righteous({
