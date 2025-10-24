@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 // import Link from "next/link";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { motion, Variants } from "framer-motion";
 import { righteousFont, robotoFont } from "../../fonts";
 import { ExternalLink, Github } from "lucide-react";
@@ -38,7 +38,9 @@ export default function ProjectsClient({
   const [isMobile, setIsMobile] = useState(false);
   const [flippedCardIndex, setFlippedCardIndex] = useState<number | null>(null);
   const [hasMounted, setHasMounted] = useState(false);
+  const [isInView, setIsInView] = useState(true);
   const duration = 5;
+  const featuredSectionRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     setHasMounted(true);
@@ -51,6 +53,28 @@ export default function ProjectsClient({
     checkScreenSize();
     window.addEventListener("resize", checkScreenSize);
     return () => window.removeEventListener("resize", checkScreenSize);
+  }, []);
+
+  // Track if the featured section is in viewport
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        setIsInView(entry.isIntersecting);
+      },
+      {
+        threshold: 0.3, // At least 30% of the section must be visible
+      }
+    );
+
+    if (featuredSectionRef.current) {
+      observer.observe(featuredSectionRef.current);
+    }
+
+    return () => {
+      if (featuredSectionRef.current) {
+        observer.unobserve(featuredSectionRef.current);
+      }
+    };
   }, []);
 
   const handleSelect = (index: number) => {
@@ -67,11 +91,11 @@ export default function ProjectsClient({
   }, [currentIndex]);
 
   useEffect(() => {
-    if (timer >= duration) {
+    if (timer >= duration && isInView) {
       setCurrentIndex((prev) => (prev + 1) % featuredProjects.length);
       setTimer(0);
     }
-  }, [timer, featuredProjects.length]);
+  }, [timer, featuredProjects.length, isInView]);
 
   const handleCardClick = (index: number) => {
     if (isMobile) {
@@ -82,7 +106,10 @@ export default function ProjectsClient({
 
   return (
     <>
-      <div className=" pt-24 lg:pt-36 pb-8 sm:pb-16 px-2 sm:px-2 lg:px-4 flex flex-col items-center">
+      <div
+        ref={featuredSectionRef}
+        className=" pt-24 lg:pt-36 pb-8 sm:pb-16 px-2 sm:px-2 lg:px-4 flex flex-col items-center"
+      >
         <div className="w-full text-center">
           <motion.h1
             initial={{ opacity: 0, x: "-100%" }}
@@ -121,7 +148,7 @@ export default function ProjectsClient({
                         : "text-gray-400 hover:text-white"
                     }`}
                   >
-                    {currentIndex === index ? "hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh" : index + 1}
+                    {currentIndex === index ? proj.title : index + 1}
                     {currentIndex === index && (
                       <motion.div
                         layoutId="activeProjectTab"
@@ -179,16 +206,16 @@ export default function ProjectsClient({
                     }}
                   >
                     <div className="absolute -inset-[2px] rounded-2xl bg-gradient-to-r from-pink-500 via-fuchsia-500 to-purple-500 animate-subtle-gradient pointer-events-none z-20">
-                      <div className="absolute inset-0 bg-gray-900/10 rounded-2xl m-[2px]"></div>
+                      <div className="absolute inset-0 bg-gray-900/10 rounded-2xl m-[2px]">
+                        <Image
+                          src={prettySafeImage(currentProject.coverImgMediaKey)}
+                          alt={currentProject.title}
+                          fill
+                          className="object-cover transition-transform duration-700 group-hover:scale-105 rounded-2xl z-10 relative"
+                          priority
+                        />
+                      </div>
                     </div>
-
-                    <Image
-                      src={prettySafeImage(currentProject.coverImgMediaKey)}
-                      alt={currentProject.title}
-                      fill
-                      className="object-fill transition-transform duration-700 group-hover:scale-105 rounded-2xl z-10 relative"
-                      priority
-                    />
 
                     <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-pink-900/30 to-transparent opacity-60 rounded-2xl z-10"></div>
                   </motion.div>
