@@ -101,3 +101,21 @@ export type IMediaSignedToken = {
     apiKey: string;
 };
 
+export type ITeamExportable = {
+    _id: string;
+    name: string;
+    description: string;
+    members: {
+        _id: string;
+        name: string;
+        links: {
+            label: string;
+            url: string;
+        }[];
+        profileImgMediaKey: string | null;
+    }[];
+    coverImageMediaKey: string | null;
+    createdAt: Date;
+    updatedAt: Date;
+}
+

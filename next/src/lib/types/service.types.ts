@@ -321,14 +321,7 @@ export namespace SDOut {
             updatedAt: Date;
         }
 
-        export type GetAll = {
-            _id: string;
-            name: string;
-            description: string;
-            coverImageMediaKey: string | null;
-            createdAt: Date;
-            updatedAt: Date;
-        }[];
+        export type GetAll = GetOne[];
 
         export type Create = EmptyObject;
         export type Update = EmptyObject;

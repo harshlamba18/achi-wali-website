@@ -44,7 +44,7 @@ const get: ServiceSignature<
         };
     }
     else if (data.target === APIControl.Team.Get.Target.ALL) {
-        const teams = await teamRepository.findAllOfListExportable();
+        const teams = await teamRepository.findAllExportable();
 
         return {
             success: true,
@@ -52,9 +52,15 @@ const get: ServiceSignature<
                 return {
                     ...team,
                     _id: team._id.toHexString(),
+                    members: team.members.map(member => {
+                        return {
+                            ...member,
+                            _id: member._id.toHexString(),
+                        }
+                    })
                 }
             })
-        }
+        };
     }
 
     throw new AppError(

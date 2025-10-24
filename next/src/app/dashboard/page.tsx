@@ -12,7 +12,11 @@ import {
   IMediaSignedToken,
   IProject,
 } from "../types/domain.types";
-import { prettyDate, prettyDescription } from "../utils/pretty";
+import {
+  prettyDate,
+  prettyDescription,
+  prettySafeImage,
+} from "../utils/pretty";
 import { Listbox } from "@headlessui/react";
 
 const heading_font = Righteous({
@@ -632,13 +636,18 @@ export default function Dashboard() {
           <div className="space-y-6">
             <div className="flex items-center space-x-4">
               <div className="w-20 h-20 bg-gradient-to-r from-pink-500/20 to-purple-500/20 rounded-full flex items-center justify-center">
-                <svg
+                {/* <svg
                   className="w-10 h-10 text-pink-400"
                   fill="currentColor"
                   viewBox="0 0 24 24"
                 >
                   <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z" />
-                </svg>
+                </svg> */}
+                <img
+                  src={prettySafeImage(user?.profileImgMediaKey ?? null)}
+                  alt=""
+                  className="relative z-10 w-full h-full rounded-full border-4 border-pink-500/20 group-hover:border-pink-500/70 transition-all duration-700 object-cover group-hover:scale-110"
+                />
               </div>
               <div>
                 <h2 className={`text-2xl text-white ${heading_font.className}`}>
@@ -991,12 +1000,13 @@ export default function Dashboard() {
                     </label>
                     <input
                       type="text"
-                      defaultValue="John Doe"
+                      contentEditable={false}
+                      value={user?.name || "Loading"}
                       className="w-full px-4 py-2 bg-white/5 border border-white/10 rounded-lg text-white focus:border-pink-400 focus:outline-none transition-colors"
                     />
                   </div>
                   <div>
-                    <label
+                    {/* <label
                       className={`block text-gray-400 text-sm mb-2 ${paragraph_font.className}`}
                     >
                       Bio
@@ -1004,7 +1014,7 @@ export default function Dashboard() {
                     <textarea
                       defaultValue="Game developer passionate about creating immersive experiences."
                       className="w-full px-4 py-2 bg-white/5 border border-white/10 rounded-lg text-white focus:border-pink-400 focus:outline-none transition-colors h-24 resize-none"
-                    />
+                    /> */}
                   </div>
                 </div>
               </div>
@@ -1090,7 +1100,10 @@ export default function Dashboard() {
                 <span
                   className={`text-white font-bold ${paragraph_font.className}`}
                 >
-                  JD
+                  {user?.name
+                    .split(" ")
+                    .map((n) => n[0])
+                    .join("") ?? "LD"}
                 </span>
               </div>
               <div>

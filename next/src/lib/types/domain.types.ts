@@ -59,7 +59,7 @@ export interface ITeamExportable extends Omit<ITeam, "members"> {
     }[];
 }
 
-export interface ITeamOfListExportable extends Omit<ITeam, "member"> {
+export interface ITeamOfListExportable extends Omit<ITeam, "members"> {
     useEslint: never;
 }
 

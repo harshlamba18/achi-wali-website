@@ -241,7 +241,7 @@ const signUpVerify: ServiceSignature<
         };
     }
 
-    await userRepository.insert({
+    const newUser = await userRepository.insert({
         name: request.name,
         email: request.email,
         passwordHash: request.passwordHash,
@@ -255,6 +255,10 @@ const signUpVerify: ServiceSignature<
     });
 
     await signUpRequestRepository.removeById(request._id);
+
+    await userRepository.updateById(newUser._id, {
+        profileImgMediaKey: `user-assets/${newUser._id.toHexString()}/profileImage`
+    });
 
     return {
         success: true,
