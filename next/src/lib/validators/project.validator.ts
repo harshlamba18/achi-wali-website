@@ -18,7 +18,7 @@ const projectValidator = {
         _id: allIbDField._id,
         title: allIbDField.shortString.optional(),
         description: allIbDField.longString.optional(),
-        tags: allIbDField.tags,
+        tags: allIbDField.tags.optional(),
         links: z.array(allIbDField.link).optional(),
         coverImgMediaKey: allIbDField.mediaKey.optional(),
         media: z.array(allIbDField._id).optional(),

@@ -13,7 +13,6 @@ import {
   IProject,
 } from "../types/domain.types";
 import { prettyDate, prettyDescription } from "../utils/pretty";
-import { HandMetal } from "lucide-react";
 import { Listbox } from "@headlessui/react";
 
 const heading_font = Righteous({
@@ -38,6 +37,13 @@ export default function Dashboard() {
     id: null,
   });
   const [showNewProjectModal, setShowNewProjectModal] = useState(false);
+  const [showProjectUpdateModal, setShowProjectUpdateModal] = useState<{
+    show: boolean;
+    id: string | null;
+  }>({
+    show: false,
+    id: null,
+  });
   const [showNewAssetModal, setShowNewAssetModal] = useState(false);
   const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false);
   const [newPostData, setNewPostData] = useState({
@@ -66,6 +72,11 @@ export default function Dashboard() {
     description: "",
     tags: "",
     links: [{ text: "", url: "" }],
+  });
+  const [projectUpdate, setProjectUpdate] = useState<{
+    coverImgMediaKey: string;
+  }>({
+    coverImgMediaKey: "",
   });
   const [newAssetData, setNewAssetData] = useState<{
     name: string;
@@ -361,6 +372,52 @@ export default function Dashboard() {
       });
       toast.success("Added a new project.");
     }
+  };
+
+  const handleProjectUpdateSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    if (showProjectUpdateModal.id === null) return;
+
+    if (projectUpdate.coverImgMediaKey.split("/").length !== 3) {
+      toast.error("Invalid media key");
+      return;
+    }
+
+    const apiResponse = await api(
+      "PATCH",
+      `/project/${showProjectUpdateModal.id}`,
+      {
+        body: {
+          coverImgMediaKey: projectUpdate.coverImgMediaKey,
+        },
+      }
+    );
+
+    if (apiResponse.action === null) {
+      toast.error("Server Error");
+    } else if (apiResponse.action === false) {
+      toast.error(apiResponse.statusCode + ": " + apiResponse.message);
+    } else {
+      fetchProjects();
+      setShowProjectUpdateModal({
+        show: false,
+        id: null,
+      });
+      setProjectUpdate({ coverImgMediaKey: "" });
+      toast.success("Updated project cover image.");
+    }
+  };
+
+  const handleProjectUpdateInputChange = (
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    const { name, value } = e.target;
+
+    setProjectUpdate((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
   };
 
   const handleProjectDelete = async (id: string) => {
@@ -797,7 +854,12 @@ export default function Dashboard() {
                     <div className="flex space-x-2 shrink-0 ml-4">
                       <button
                         className="p-1 hover:bg-white/10 rounded-lg transition-colors"
-                        onClick={() => {}}
+                        onClick={() => {
+                          setShowProjectUpdateModal({
+                            id: project._id,
+                            show: true,
+                          });
+                        }}
                       >
                         <svg
                           className="w-4 h-4 text-gray-400 hover:text-white"
@@ -1585,6 +1647,90 @@ export default function Dashboard() {
                   {/* Button Shimmer Effect */}
                   <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent transform -translate-x-full group-hover:translate-x-full transition-transform duration-700"></div>
                   <span className="relative z-10">Create Project</span>
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* Project Update Modal */}
+      {showProjectUpdateModal.show && (
+        <div className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+          <div className="glass rounded-2xl w-full max-w-lg max-h-[90vh] overflow-y-auto">
+            <form onSubmit={handleProjectUpdateSubmit}>
+              {/* Modal Header */}
+              <div className="flex items-center justify-between p-6 border-b border-white/10">
+                <h2 className={`text-xl text-white ${heading_font.className}`}>
+                  Update Project Cover Image Key
+                </h2>
+                <button
+                  type="button"
+                  onClick={() =>
+                    setShowProjectUpdateModal((prev) => {
+                      return {
+                        show: false,
+                        id: prev.id,
+                      };
+                    })
+                  }
+                  className="p-2 hover:bg-white/10 rounded-lg transition-colors"
+                >
+                  <svg
+                    className="w-6 h-6 text-gray-400 hover:text-white"
+                    fill="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z" />
+                  </svg>
+                </button>
+              </div>
+
+              {/* Modal Content */}
+              <div className="p-6 space-y-6">
+                {/* Cover Image Media Key Field */}
+                <div>
+                  <label
+                    className={`block text-gray-300 text-sm font-medium mb-2 ${paragraph_font.className}`}
+                  >
+                    Project Cover Image Media Key (e.g.,
+                    user-assets/user-id/project-cover)
+                  </label>
+                  <input
+                    type="text"
+                    name="coverImgMediaKey"
+                    value={projectUpdate.coverImgMediaKey}
+                    onChange={handleProjectUpdateInputChange}
+                    className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:border-pink-400 focus:ring-2 focus:ring-pink-400/20 transition-all duration-300"
+                    placeholder="Paste the asset key here..."
+                    required
+                  />
+                </div>
+              </div>
+
+              {/* Action Buttons */}
+              <div className="flex justify-end space-x-4 p-6 border-t border-white/10">
+                <button
+                  type="button"
+                  onClick={() =>
+                    setShowProjectUpdateModal(() => {
+                      return {
+                        show: false,
+                        id: null,
+                      };
+                    })
+                  }
+                  className="px-6 py-2 text-gray-400 hover:text-white hover:bg-white/10 rounded-lg transition-all duration-200"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  className="px-6 py-2 bg-gradient-to-r from-pink-500 to-purple-500 text-white rounded-lg hover:scale-105 transition-all duration-200 relative overflow-hidden group"
+                >
+                  {/* Button Shimmer Effect */}
+                  <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent transform -translate-x-full group-hover:translate-x-full transition-transform duration-700"></div>
+                  <span className="relative z-10">Save Key</span>
                 </button>
               </div>
             </form>

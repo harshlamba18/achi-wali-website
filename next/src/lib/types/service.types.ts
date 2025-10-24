@@ -30,7 +30,8 @@ export enum ESECs {
     FEATURED_NOT_FOUND,
     ALREADY_FEATURED,
 
-    MEDIA_NOT_FOUND
+    MEDIA_NOT_FOUND,
+    MEDIA_PUBLIC_ID_ALREADY_EXISTS,
 }
 
 export namespace SDIn {
