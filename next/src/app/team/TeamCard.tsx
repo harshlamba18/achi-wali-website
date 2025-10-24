@@ -19,12 +19,10 @@ interface TeamCardProps {
 export default function TeamCard({ member, index }: TeamCardProps) {
   return (
         <div
-      className="group relative bg-black/30 rounded-2xl p-4 sm:p-5 lg:p-6 border border-pink-500/20 backdrop-blur-md hover:border-pink-500/50 transition-all duration-700 hover:-translate-y-2 hover:shadow-[0_15px_50px_rgba(236,72,153,0.25)] animate-slide-up will-change-transform perspective-1000 hover:z-10"
+      className="group relative bg-black/30 rounded-2xl p-4 sm:p-5 lg:p-6 border border-pink-500/20 backdrop-blur-md hover:border-pink-500/50 transition-transform duration-700 hover:-translate-y-2 hover:shadow-[0_15px_50px_rgba(236,72,153,0.25)] animate-slide-up will-change-transform perspective-1000 hover:z-10 transform-gpu"
       style={{ 
         animationDelay: `${index * 0.15}s`,
         animationFillMode: 'backwards',
-        transform: 'translateZ(0)',
-        transition: 'all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1)',
         height: 'fit-content',
         maxWidth: '100%'
       }}
@@ -38,11 +36,14 @@ export default function TeamCard({ member, index }: TeamCardProps) {
           const rotateX = (y - centerY) / 25;
           const rotateY = (centerX - x) / 25;
           const scale = 1.05;
-          e.currentTarget.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateZ(20px) scale(${scale})`;
+          if (e.currentTarget) {
+            e.currentTarget.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateZ(20px) scale(${scale})`;
+            e.currentTarget.style.transition = 'none';
+          }
         }
       }}
       onMouseLeave={(e) => {
-        if (window.innerWidth > 768) {
+        if (window.innerWidth > 768 && e.currentTarget) {
           e.currentTarget.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) translateZ(0) scale(1)';
           e.currentTarget.style.transition = 'all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1)';
         }

@@ -110,22 +110,22 @@ export default function ProjectsClient({
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.2 }}
             >
-              <div className="grid grid-cols-2 gap-2 sm:gap-2 lg:flex lg:overflow-x-auto lg:gap-1 justify-center relative z-10">
+              <div className="grid grid-cols-2 gap-2 sm:gap-2 lg:flex lg:min-w-xl lg:overflow-x-hidden lg:justify-evenly relative z-10">
                 {featuredProjects.map((proj, index) => (
                   <motion.button
                     key={proj._id || index}
                     onClick={() => handleSelect(index)}
-                    className={`relative w-auto lg:w-auto px-2 py-2 sm:px-4 sm:py-2.5 rounded-3xl font-semibold transition-all duration-300 whitespace-nowrap text-xs sm:text-lg lg:text-base tracking-wide ${
+                    className={`relative w-auto overflow-hidden px-2 py-2 sm:px-4 sm:py-2.5 rounded-3xl font-semibold transition-all duration-300 whitespace-nowrap text-[0.6rem] sm:text-lg lg:text-base tracking-wide ${
                       currentIndex === index
                         ? "text-white"
                         : "text-gray-400 hover:text-white"
                     }`}
                   >
-                    {proj.title}
+                    {currentIndex === index ? "hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh" : index + 1}
                     {currentIndex === index && (
                       <motion.div
                         layoutId="activeProjectTab"
-                        className="absolute inset-0 bg-gradient-to-r from-pink-500 via-fuchsia-500 to-purple-500 rounded-full -z-10 shadow-[0_0_25px_-5px_rgba(236,72,153,0.6)] animate-gradient"
+                        className="absolute inset-0  bg-gradient-to-r from-pink-500 via-fuchsia-500 to-purple-500 rounded-full -z-10 shadow-[0_0_25px_-5px_rgba(236,72,153,0.6)] animate-gradient"
                         transition={{
                           type: "spring",
                           bounce: 0.25,

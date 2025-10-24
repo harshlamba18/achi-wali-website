@@ -24,7 +24,13 @@ const paragraph_font = Roboto({
   subsets: ["latin"],
 });
 
-type ActiveSection = "blog" | "projects" | "profile" | "assets" | "settings";
+type ActiveSection =
+  | "blog"
+  | "projects"
+  | "profile"
+  | "assets"
+  | "settings"
+  | "home";
 
 export default function Dashboard() {
   const [activeSection, setActiveSection] = useState<ActiveSection>("profile");
@@ -100,6 +106,15 @@ export default function Dashboard() {
   });
 
   const menuItems = [
+    {
+      id: "home" as ActiveSection,
+      label: "Home",
+      icon: (
+        <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+          <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z" />
+        </svg>
+      ),
+    },
     {
       id: "profile" as ActiveSection,
       label: "Profile",
@@ -239,6 +254,16 @@ export default function Dashboard() {
     fetchProjects();
     fetchAssets();
   }, []);
+
+  useEffect(() => {
+    if (activeSection === "home") {
+      router.push("/");
+    }
+  }, [activeSection, router]);
+
+  if (activeSection === "home") {
+    return null;
+  }
 
   const handleNewPostSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
