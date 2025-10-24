@@ -1,4 +1,3 @@
-
 "use client";
 
 import Image from "next/image";
@@ -12,6 +11,7 @@ export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
 
   const navItems = [
+    { name: "Home", href: "/" },
     { name: "Games", href: "/games" },
     { name: "Projects", href: "/projects" },
     { name: "Blog", href: "/blog" },
@@ -55,21 +55,26 @@ export default function Navbar() {
             : "bg-transparent"
         }`}
       >
-            <motion.div
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              className="relative pl-2"
-            >
-              <Link href="/">
-                <Image
-                  src={Logo}
-                  alt="Computer Graphics Society Logo"
-                  width={56}
-                  height={56}
-                  className={isMenuOpen ? "hidden w-10 h-10 lg:w-14 lg:h-14 drop-shadow-lg hover:drop-shadow-2xl transition-all duration-300" :  " w-10 h-10 lg:w-14 lg:h-14 drop-shadow-lg hover:drop-shadow-2xl transition-all duration-300"}
-                />
-              </Link>
-            </motion.div>        <div className="hidden lg:flex flex-row items-center gap-8 bg-gray-900/30 backdrop-blur-2xl px-8 py-4 rounded-2xl shadow-2xl border border-pink-500/20 hover:border-pink-500/40 transition-all duration-300">
+        <motion.div
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+          className="relative pl-2"
+        >
+          <Link href="/">
+            <Image
+              src={Logo}
+              alt="Computer Graphics Society Logo"
+              width={56}
+              height={56}
+              className={
+                isMenuOpen
+                  ? "hidden w-10 h-10 lg:w-14 lg:h-14 drop-shadow-lg hover:drop-shadow-2xl transition-all duration-300"
+                  : " w-10 h-10 lg:w-14 lg:h-14 drop-shadow-lg hover:drop-shadow-2xl transition-all duration-300"
+              }
+            />
+          </Link>
+        </motion.div>{" "}
+        <div className="hidden lg:flex flex-row items-center gap-8 bg-gray-900/30 backdrop-blur-2xl px-8 py-4 rounded-2xl shadow-2xl border border-pink-500/20 hover:border-pink-500/40 transition-all duration-300">
           {navItems.map((item, index) => (
             <motion.div
               key={item.name}
@@ -116,7 +121,6 @@ export default function Navbar() {
             </Link>
           </motion.div>
         </div>
-
         <motion.button
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -178,8 +182,12 @@ export default function Navbar() {
                     />
                   </div>
                   <div className="min-w-0">
-                    <h2 className="text-white font-bold text-base xs:text-lg truncate">CGS</h2>
-                    <p className="text-pink-300 text-xs xs:text-sm truncate">Graphics Society</p>
+                    <h2 className="text-white font-bold text-base xs:text-lg truncate">
+                      CGS
+                    </h2>
+                    <p className="text-pink-300 text-xs xs:text-sm truncate">
+                      Graphics Society
+                    </p>
                   </div>
                 </div>
               </div>
