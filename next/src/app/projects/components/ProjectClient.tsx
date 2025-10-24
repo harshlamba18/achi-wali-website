@@ -121,7 +121,7 @@ export default function ProjectsClient({
                         : "text-gray-400 hover:text-white"
                     }`}
                   >
-                    {currentIndex === index ? "hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh" : index + 1}
+                    {currentIndex === index ? proj.title : index + 1}
                     {currentIndex === index && (
                       <motion.div
                         layoutId="activeProjectTab"
